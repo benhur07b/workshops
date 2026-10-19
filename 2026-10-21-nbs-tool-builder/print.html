@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NbS Tool Print Cards</title>
+<meta name="description" content="Word cards, wish cards and step headers for the paper version of Build Our NbS Tool.">
+<link rel="stylesheet" href="style.css">
+<style>
+  @page { size: A4; margin: 10mm; }
+  .controls { margin-bottom: 24px; }
+  .controls fieldset { border: 2px solid var(--rule); border-radius: var(--radius); padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .controls label { display: inline-flex; gap: 8px; align-items: center; font-weight: 400; margin: 0; }
+
+  .sheet { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 51mm; gap: 4mm; }
+  .wcard {
+    border: 0.6mm solid var(--navy); border-radius: 3mm; padding: 4mm; overflow: hidden;
+    display: flex; flex-direction: column; gap: 2mm; background: var(--white); break-inside: avoid;
+  }
+  .wcard .stepname { font-size: 9pt; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  .wcard .cid { font-family: var(--font-title); font-weight: 800; font-size: 16pt; line-height: 1; }
+  .wcard .ctitle { font-family: var(--font-title); font-weight: 700; font-size: 13pt; line-height: 1.15; margin: 0; }
+  .wcard .ctext { font-size: 10.5pt; line-height: 1.3; margin: 0; }
+  .wcard .csrc { margin-top: auto; font-size: 8.5pt; color: var(--muted); }
+  .wcard.wish { border-color: var(--orange); border-style: dashed; gap: 0.8mm; padding: 3mm 4mm; }
+  .wcard.wish .cid { color: var(--navy); background: var(--orange); align-self: flex-start; padding: 0 2mm; border-radius: 1mm; font-size: 12pt; }
+  .wcard .line { border-bottom: 0.3mm solid var(--rule); height: 5mm; flex: none; }
+  .wcard .lab { font-size: 8.5pt; color: var(--muted); margin-top: 0.5mm; }
+
+  .header-sheet {
+    border: 0.8mm solid var(--navy); border-radius: 4mm; padding: 10mm; height: 132mm; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center; gap: 6mm; break-inside: avoid; background: var(--white);
+  }
+  .header-pair { display: grid; grid-template-rows: 132mm 132mm; gap: 8mm; }
+  .header-sheet .big { font-family: var(--font-title); font-weight: 800; font-size: 48pt; line-height: 1; letter-spacing: -0.02em; }
+  .header-sheet .big em { font-style: normal; background: var(--orange); color: var(--navy); padding: 0 0.1em; border-radius: 0.1em; }
+  .header-sheet .q { font-size: 20pt; margin: 0; }
+  .header-sheet .key { display: flex; gap: 10mm; font-size: 14pt; }
+  .header-sheet .key span { display: inline-flex; align-items: center; gap: 3mm; }
+
+  .header-sheet .limit { font-family: var(--font-title); font-weight: 700; font-size: 22pt; margin: 0; }
+  .header-sheet .boxes { display: flex; gap: 4mm; }
+  .header-sheet .boxes span { width: 14mm; height: 14mm; border: 0.8mm solid var(--green); border-radius: 2mm; }
+
+  .people-sheet { display: grid; grid-template-rows: repeat(3, 87mm); gap: 4mm; }
+  .people-sheet .persona { margin: 0; padding: 6mm 8mm; border: 0.8mm solid var(--navy); border-left: 4mm solid var(--orange); box-shadow: none; font-size: 12pt; break-inside: avoid; overflow: hidden; }
+  .people-sheet .persona h3 { font-size: 20pt; }
+
+  @page landscape { size: A4 landscape; margin: 10mm; }
+  .data-sheet { page: landscape; }
+  .data-sheet h2 { font-size: 16pt; margin-bottom: 2mm; }
+  .data-sheet p { font-size: 10pt; margin: 0 0 3mm; }
+  .data-sheet table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+  .data-sheet th, .data-sheet td { border: 0.3mm solid var(--navy); padding: 1.5mm 2mm; text-align: left; vertical-align: top; }
+  .data-sheet th { background: var(--navy); color: var(--white); font-family: var(--font-title); }
+  .data-sheet td.blank { height: 9mm; }
+  .data-sheet .opts { color: var(--muted); font-size: 8pt; line-height: 1.35; }
+  .data-sheet col.c-id { width: 4%; } .data-sheet col.c-name { width: 17%; } .data-sheet col.c-holder { width: 14%; }
+  .data-sheet col.c-need { width: 7%; } .data-sheet col.c-why { width: 20%; } .data-sheet col.c-share { width: 15%; }
+  .data-sheet col.c-where { width: 18%; } .data-sheet col.c-dots { width: 5%; }
+
+  .page-break { break-after: page; }
+
+  @media print {
+    body { background: var(--white); }
+    .topbar, footer.site, .controls, .no-print { display: none !important; }
+    main { max-width: none; padding: 0; }
+    .wcard, .header-sheet, .people-sheet, .data-sheet { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .swatch { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="controls no-print">
+    <h1>Print the cards</h1>
+    <p class="lead">Word cards are easy to print, or to copy by hand on post-its: the number, the title and one sentence. The pictures and longer explanations are in the <a href="index.html">card guide</a>, under the same numbers.</p>
+    <fieldset>
+      <legend>Print</legend>
+      <label><input type="checkbox" data-part="people" checked> The people we build for (three per page; cut one out for each table)</label>
+      <label><input type="checkbox" data-part="headers" checked> Step headers (two per page, for the top of each flip chart, with its number of keeps)</label>
+      <label><input type="checkbox" data-part="cards" checked> Word cards (<span id="n-cards"></span> cards, 15 per page; blank wish cards fill the last page)</label>
+      <label><input type="checkbox" data-part="wishes"> Extra blank wish cards (one page of 15)</label>
+      <label><input type="checkbox" data-part="data" checked> Data sheet (landscape, one per table or organisation)</label>
+    </fieldset>
+    <p class="muted small" id="pages"></p>
+    <div class="toolbar"><button class="btn" type="button" onclick="print()">Print</button></div>
+  </div>
+  <div id="sheets"></div>
+</main>
+<script src="cards.js"></script>
+<script src="common.js"></script>
+<script>
+  const { el, topbar, footer, allCards } = UI;
+  topbar();
+  const cards = allCards();
+  const stepTitle = (id) => NBS.steps.find((s) => s.id === id).title;
+  const sheets = document.getElementById("sheets");
+
+  const chunks = (arr, n) => Array.from({ length: Math.ceil(arr.length / n) }, (_, i) => arr.slice(i * n, i * n + n));
+  const PER_PAGE = 15;
+
+  const headers = el("div", { "data-part": "headers" },
+    chunks(NBS.steps, 2).map((pair) => el("div", { class: "header-pair page-break" }, pair.map((s) =>
+      el("div", { class: "header-sheet" },
+        el("div", { class: "big" }, el("em", {}, s.id), " ", s.title),
+        el("p", { class: "q" }, s.question),
+        el("p", { class: "limit" }, "Keep up to " + UI.keepLimit(s) + " of " + s.cards.length + " cards"),
+        el("div", { class: "boxes", "aria-hidden": "true" }, Array.from({ length: UI.keepLimit(s) }, () => el("span"))),
+        el("div", { class: "key" },
+          el("span", {}, el("span", { class: "swatch keep" }), "Keep it"),
+          el("span", {}, el("span", { class: "swatch maybe" }), "Maybe"),
+          el("span", {}, el("span", { class: "swatch skip" }), "We don't need it"),
+          el("span", {}, el("span", { class: "swatch wish" }), "We wish it had…")))))));
+
+  const wishCard = () => el("div", { class: "wcard wish" },
+    el("span", { class: "cid" }, "We wish it had…"),
+    el("div", { class: "line" }), el("div", { class: "line" }),
+    el("span", { class: "lab" }, "Information it needs"), el("div", { class: "line" }),
+    el("span", { class: "lab" }, "Who has it"), el("div", { class: "line" }));
+  // Blank wish cards fill whatever the word cards leave free on their last page.
+  const fillers = (PER_PAGE - (cards.length % PER_PAGE)) % PER_PAGE;
+
+  const cardSheets = el("div", { "data-part": "cards" },
+    chunks([...cards, ...Array(fillers).fill(null)], PER_PAGE).map((group) => el("div", { class: "sheet page-break" },
+      group.map((c) => c === null ? wishCard() : el("div", { class: "wcard" },
+        el("span", { class: "stepname" }, "Step " + c.step + " · " + stepTitle(c.step)),
+        el("span", { class: "cid" }, c.id),
+        el("p", { class: "ctitle" }, c.title),
+        el("p", { class: "ctext" }, c.text),
+        el("span", { class: "csrc" }, NBS.sources[c.source]))))));
+
+  const wishSheet = el("div", { "data-part": "wishes" },
+    el("div", { class: "sheet page-break" }, Array.from({ length: PER_PAGE }, wishCard)));
+
+  const peopleSheets = el("div", { "data-part": "people" },
+    chunks(NBS.people, 3).map((pair) => el("div", { class: "people-sheet page-break" },
+      pair.map((p) => el("div", { class: "persona" },
+        el("h3", {}, el("em", {}, p.name), ", " + p.role),
+        el("p", {}, p.story),
+        el("p", {}, el("strong", {}, "Needs: "), p.needs),
+        el("p", { class: "muted" }, p.tech),
+        el("p", {}, el("strong", {}, "At every card, ask: would " + p.name + " use this?")))))));
+
+  const shareOpts = () => ["Yes · With an agreement", "No · We don't have it", "Not sure"].flatMap((t, i) => (i ? [el("br"), t] : [t]));
+  const needOpts = () => ["Need", "Maybe", "No"].flatMap((t, i) => (i ? [el("br"), t] : [t]));
+  const dataSheet = el("div", { "data-part": "data" },
+    el("div", { class: "data-sheet page-break" },
+      el("h2", {}, "Data we need"),
+      el("p", {}, "Table or organisation: ______________________   Circle: Need / Maybe / Don't need. Give your five data dots to the data the tool needs most."),
+      el("table", {},
+        el("colgroup", {}, ["id", "name", "holder", "need", "why", "share", "where", "dots"].map((c) => el("col", { class: "c-" + c }))),
+        el("thead", {}, el("tr", {}, ["", "Data", "We think it is with", "Need it?", "Why is it needed?", "Can you share it?", "Where is it, or who has it?", "Dots"].map((h) => el("th", {}, h)))),
+        el("tbody", {},
+          NBS.data.map((d) => el("tr", {}, el("td", {}, d.id), el("td", {}, d.name), el("td", {}, d.holder), el("td", { class: "opts" }, needOpts()), el("td", {}), el("td", { class: "opts" }, shareOpts()), el("td", {}), el("td", {}))),
+          Array.from({ length: 3 }, () => el("tr", {}, el("td", { class: "blank" }), el("td", {}), el("td", {}), el("td", { class: "opts" }, needOpts()), el("td", {}), el("td", { class: "opts" }, shareOpts()), el("td", {}), el("td", {})))))));
+
+  sheets.append(peopleSheets, headers, cardSheets, wishSheet, dataSheet);
+
+  const pages = { people: Math.ceil(NBS.people.length / 3), headers: Math.ceil(NBS.steps.length / 2), cards: Math.ceil(cards.length / PER_PAGE), wishes: 1, data: 2 };
+  document.getElementById("n-cards").textContent = cards.length;
+  function update() {
+    let total = 0;
+    for (const box of document.querySelectorAll("[data-part]")) {
+      if (box.tagName !== "INPUT") continue;
+      sheets.querySelector('[data-part="' + box.dataset.part + '"]').hidden = !box.checked;
+      if (box.checked) total += pages[box.dataset.part];
+    }
+    document.getElementById("pages").textContent = "What is ticked: " + total + " A4 pages. Per table: the word cards (" + pages.cards + " pages, with " + fillers + " wish cards on the last), the step headers for its flip charts (" + pages.headers + " pages, or written by hand) and a data sheet (2 pages). The people are printed once and cut, one per table.";
+  }
+  document.querySelectorAll("input[data-part]").forEach((b) => b.addEventListener("change", update));
+  update();
+  footer();
+</script>
+</body>
+</html>

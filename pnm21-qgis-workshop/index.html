@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177634702-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-177634702-1');
+</script>
+
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pista ng Mapa 2021 QGIS Workshop - BNHR</title>
+
+<!-- OG meta -->
+<meta property="og:site_name" content="BNHR" />
+<meta property="og:url" content="http://bnhr.xyz/workshops/pnm21-qgis-workshop/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Pista ng Mapa 2021 QGIS Workshop" />
+<meta property="og:description" content="" />
+<meta property="og:image" content="https://d1v4x8erby89pz.cloudfront.net/img/site/images/BNHR-bg.webp" />
+
+
+<!-- Twitter OG -->
+
+<meta name="twitter:card" content="summary_large_image" />
+
+<meta name="twitter:site" content="@BNHRdotXYZ" />
+
+<meta name="twitter:creator" content="@BNHRdotXYZ" />
+
+<meta name="twitter:url" content="http://bnhr.xyz/workshops/pnm21-qgis-workshop/" />
+<meta name="twitter:title" content="Pista ng Mapa 2021 QGIS Workshop" />
+<meta name="twitter:description" content="" />
+<meta property="og:image:width" content="1440" />
+<meta property="og:image:height" content="754" />
+
+<link rel="shortcut icon" href="/favicon.ico">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo&family=Josefin+Sans:wght@700&family=PT+Sans:wght@400;700&family=Fira+Sans:wght@200;300;400;500;600;700&family=Fira+Code:wght@200;300;400;500;600;700&family=Roboto:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Normalize -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/490e02bdd0.js" crossorigin="anonymous"></script>
+
+<!-- Bootstrap CSS-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<!-- Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/assets/js/simple-jekyll-search.min.js"></script>
+
+<!-- BNHR assets -->
+<link href="/assets/css/main.css" rel="stylesheet">
+<link href="/assets/css/syntax.css" rel="stylesheet">
+
+<link type="application/atom+xml" rel="alternate" href="https://bnhr.xyz/feed.xml" title="BNHR" />
+
+    </head>
+    <body>
+        <!-- Navigation -->
+<div class="container pb-2" id="page-top">
+    <nav class="navbar navbar-default navbar-expand-lg d-print">
+        <a class="navbar-brand" href="/">
+            <img src="https://d1v4x8erby89pz.cloudfront.net/img/logos/BNHR-navbar-logo.webp" class="img-fluid" style="max-height: 72px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar">
+            <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-navbar">
+            <ul class="navbar-nav ml-auto">
+                <!-- <li>
+                    <a class="nav-link" href="/">home</a>
+                </li> -->
+                <!-- <li>
+                    <a class="nav-link" href="/#what-i-do">what I do</a>
+                </li> -->
+                <li>
+                    <a class="nav-link" href="/#contact">contact</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="https://learn-qgis.bnhr.xyz">learn</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">training</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/courses/2025/">QGIS - 2025</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">consult</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/consult/free">free</a>
+                        <a class="dropdown-item" href="/consult/book">book</a>
+                    </div>
+                </li>
+                <li>
+                    <a class="nav-link" href="/blog/">blog</a>
+                </li>
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/services">services</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/training/">training</a>
+                    </div>
+                </li> -->
+                <li>
+                    <a class="nav-link" href="#support-bnhr">support</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/portfolio">portfolio</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/portfolio/cv.html">cv</a>
+                        <a class="dropdown-item" href="/portfolio/works.html">works</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+        <div class="container">
+    <h1 class="pt-4 mt-0 mb-1">Pista ng Mapa 2021 QGIS Workshop</h1>
+<p class="post-meta-info pl-1"> ᛫ 4 min read</p>
+<p class="small">
+    
+        <a class="post-meta-tag" href="/blog/tags.html#qgis"><span>qgis</span></a>
+    
+        <a class="post-meta-tag" href="/blog/tags.html#qgis3"><span>qgis3</span></a>
+    
+        <a class="post-meta-tag" href="/blog/tags.html#pistangmapa"><span>pistangmapa</span></a>
+    
+        <a class="post-meta-tag" href="/blog/tags.html#basketball"><span>basketball</span></a>
+    
+        <a class="post-meta-tag" href="/blog/tags.html#foss"><span>foss</span></a>
+    
+        <a class="post-meta-tag" href="/blog/tags.html#foss4g"><span>foss4g</span></a>
+    
+        <a class="post-meta-tag" href="/blog/tags.html#opensource"><span>opensource</span></a>
+    
+        <a class="post-meta-tag" href="/blog/tags.html#freeasinfreedom"><span>freeasinfreedom</span></a>
+    
+        <a class="post-meta-tag" href="/blog/tags.html#freesoftware"><span>freesoftware</span></a>
+    
+</p>
+
+    <div class="pb-4">
+        <span class="font-weight-bold color-accent-red">SHARE:</span>
+<a class="no-underline-link" alt="Share on Twitter" href='https://twitter.com/intent/tweet?text=Pista ng Mapa 2021 QGIS Workshop&url=http://bnhr.xyz/workshops/pnm21-qgis-workshop/" onclick="window.open(this.href, "mywin", "left=20,top=20,width=500,height=500,toolbar=1,resizable=0"); return false;'>
+<i class="mx-2 share-twitter fab fa-twitter fa-lg"></i>
+</a>
+
+<a class="no-underline-link" alt="Share on Facebook"  href='https://www.facebook.com/sharer/sharer.php?u=http://bnhr.xyz/workshops/pnm21-qgis-workshop/" onclick="window.open(this.href, "mywin", "left=20,top=20,width=500,height=500,toolbar=1,resizable=0"); return false;'>
+<i class="mx-2 share-fb fab fa-facebook fa-lg"></i>
+</a>
+
+<a class="no-underline-link" alt="Share on Reddit"  href='https://www.reddit.com/submit?url=http://bnhr.xyz/workshops/pnm21-qgis-workshop/" onclick="window.open(this.href, "mywin", "left=20,top=20,width=900,height=500,toolbar=1,resizable=0"); return false;'>
+<i class="mx-2 share-reddit fab fa-reddit fa-lg"></i>
+</a>
+
+<a class="no-underline-link" alt="Share as email" href="mailto:?subject=Pista ng Mapa 2021 QGIS Workshop&amp;body=Check out this site http://bnhr.xyz/workshops/pnm21-qgis-workshop/"><i class="mx-2 share-email fas fa-envelope-square fa-lg"></i>
+</a>
+
+<a class="no-underline-link" alt="Subscribe to Atom link"  href='/feed.xml'>
+<i class="mx-2 share-rss fas fa-rss fa-lg"></i>
+</a>
+    </div>
+    <div class="pt-4 pb-2">
+    <section id="blog-post">
+        <div class="embed-responsive embed-responsive-16by9">
+<iframe class="mb-4 embed-responsive-item" src="https://www.youtube.com/embed/4xbVJTEHcIE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
+<p><br /></p>
+<h2 id="setting-of-expectations">Setting of expectations</h2>
+<ul>
+  <li>Time vs Objectives
+    <ul>
+      <li><strong>Really short-term (&lt; 1 day)</strong> events are best for <strong>awareness-raising and community building</strong>.</li>
+      <li><strong>Short-term (&lt;1 week)</strong> events can provide <strong>some skill-building opportunities</strong>.</li>
+      <li><strong>Medium-term (2-12 weeks)</strong> events are good for <strong>building and applying skills</strong>.</li>
+      <li><strong>Long-term (&gt; 3 months)</strong> events can create <strong>direct-impact projects</strong>.</li>
+    </ul>
+  </li>
+  <li>This isn’t a basic QGIS training (you can visit my <a href="https://bnhr.xyz/services/training/spatial">website</a> for that).</li>
+  <li>This isn’t a comprehensive list of QGIS features but you can find a lot of stuff about QGIS, FOSS4G, and open geospatial on my <a href="https://bnhr.xyz">website</a>, <a href="https://youtube.com/c/bnhrdotxyz">YouTube</a>, <a href="https://facebook.com/bnhr.xyz">Facebook</a>, and <a href="https://twitter.com/bnhrdotxyz">Twitter</a>.</li>
+  <li>Some of the exercises shown will be about the application of QGIS features and functionalities to <strong>basketball analysis</strong>.</li>
+</ul>
+
+<h2 id="data">Data</h2>
+<p>You can find the data for the workshop <a href="/workshops/pnm21-qgis-workshop/data">here</a>.</p>
+
+<hr />
+<h3 id="qgis-processing-framework">QGIS Processing Framework</h3>
+<p>The QGIS Processing Framework includes:</p>
+<ul>
+  <li>native QGIS algorithms</li>
+  <li>algorithms from processing providers (GDAL, GRASS, SAGA)</li>
+  <li>algorithms from processing plugins and processing scripts</li>
+  <li>QGIS models</li>
+  <li>Python scripts</li>
+</ul>
+
+<p>Algorithms that are part of the Processing Framework can:</p>
+<ul>
+  <li>be batch processed</li>
+  <li>be used in the Graphical Modeler</li>
+  <li>be used in Python (via PyQGIS processing), R, and the command line</li>
+</ul>
+
+<p>How do I know if the plugin I’m using is part of the Processing Framework:</p>
+<ul>
+  <li>Can you see it in the Processing Toolbox?
+    <ul>
+      <li>If yes, then it’s part of the framework</li>
+      <li>If not, then it is not</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>LEARN MORE</strong>:</p>
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=9fWQZqPjPVk">QGIS Open Day presentation: Intro to processing provider plugins</a></li>
+  <li><a href="https://www.youtube.com/watch?v=pdO49ysuqVY">FOSS4G2 2019 Presentation: QGIS: No more plugins only processing</a></li>
+  <li><a href="https://docs.qgis.org/latest/en/docs/user_manual/processing/index.html">QGIS Processing Framework, QGIS Desktop User Guide/Manual</a></li>
+</ul>
+
+<p><em>NOTE: Make sure you have downloaded all the data for the workshop before proceeding</em></p>
+
+<hr />
+<h3 id="the-graphical-modeler">The graphical modeler</h3>
+
+<p><em>NOTE: Add spatial indices to your vector data for faster processing. Use the Create spatial index processing algorithm.</em></p>
+
+<ol>
+  <li>Open the Graphical Modeler I QGIS project file (Graphical Modeler I.qgz)</li>
+  <li>If QGIS encounters “Handle Unavailable Layers” issue, try to use <strong>Auto-Find</strong> to resolve the issue or you can just manually add the correct link to the following layers inside <strong>pnm21-qgis-workshop-data.gpkg</strong> in the data folder:
+    <ul>
+      <li>highway_all</li>
+      <li>amenity_school</li>
+      <li>PHL_provinces</li>
+    </ul>
+  </li>
+  <li>Let’s build two models that look for suitable sites for schools using just 2 parameters:
+    <ul>
+      <li>distance from existing schools</li>
+      <li>distance from roads</li>
+    </ul>
+  </li>
+</ol>
+
+<h4 id="model-1---suitable-areas-are-those-near-existing-schools-and-roads-that-meet-the-following-criteria">Model 1 - Suitable areas are those near existing schools and roads that meet the following criteria:</h4>
+<ol>
+  <li>Within X meters from an existing school</li>
+  <li>Within X meters from a road</li>
+</ol>
+
+<h4 id="model-2---suitable-areas-are-those-that-are-isolated-and-meet-the-following-criteria">Model 2 - Suitable areas are those that are isolated and meet the following criteria:</h4>
+<ol>
+  <li>Not within X meters from an existing school</li>
+  <li>Not within X meters from a road</li>
+</ol>
+
+<p><strong>BONUS:</strong> You can open the <strong><em>suitable-school-sites.model3</em></strong> and <strong><em>suitable-school-sites-isolated.model3</em></strong> files inside models/school-suitability to see how the final models look like (or reverse engineer them).</p>
+
+<p><strong>CHALLENGE:</strong> How else can we improve the model? (HINT: Can we use a processing algorithm to automatically download road and school data?)</p>
+
+<p><strong>LEARN MORE</strong>:</p>
+<ul>
+  <li><a href="https://docs.qgis.org/latest/en/docs/user_manual/processing/modeler.html">The graphical modeler, QGIS Desktop User Guide/Manual</a></li>
+</ul>
+
+<hr />
+<h3 id="expressions-are-your-best-friend">Expressions are your best friend</h3>
+
+<p><em>NOTE: Add spatial indices to your vector data for faster processing. Use the Create spatial index processing algorithm.</em></p>
+
+<p>Whenever you see this icon <img src="https://docs.qgis.org/3.22/en/_images/mIconExpression.png" alt="" />, that means that you can use an Expression in that part of QGIS.</p>
+
+<ol>
+  <li>Open the Expressions I QGIS project file (Expressions I.qgz).</li>
+  <li>Our task is to summarize field goals per grid (e.g. count the number of attempts, count the number of points scored, count the points per attempt)</li>
+</ol>
+
+<p><strong>BONUS:</strong> You can open the <strong><em>summarize-fg.model3</em></strong> file inside models/courtvisionph to see how the final models look like (or reverse engineer them).</p>
+
+<p><strong>CHALLENGE:</strong> If I want to add fields that count the number of missed and made attempts per grid, what should I do?</p>
+
+<p><strong>LEARN MORE</strong>:</p>
+<ul>
+  <li><a href="https://docs.qgis.org/latest/en/docs/user_manual/expressions/index.html">Level up with Expressions, QGIS Desktop User Guide/Manual</a></li>
+  <li><a href="https://docs.qgis.org/latest/en/docs/user_manual/expressions/functions_list.html">List of functions/expressions</a></li>
+</ul>
+
+<hr />
+<h3 id="layering-your-symbols-and-geometry-generators">Layering your symbols and geometry generators</h3>
+
+<p>Utilize symbol layers and geometry generators to create custom and complex styles.</p>
+
+<ol>
+  <li>Open the Symbol layers and geometry generators I QGIS project file (Symbol layers and geometry generators I.qgz).</li>
+  <li>Let’s create a bivariate style for the PPA grid that shows the number of attempts (size) and the points per attempt (color) by:
+    <ul>
+      <li>getting the centroid of each grid cell</li>
+      <li>setting the size of the centroid marker to be based on the number of attempts</li>
+      <li>setting the color of the centroid marker to be based on the points per attempt</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+<h3 id="the-data-defined-assistant">The data-defined Assistant</h3>
+
+<p>Whenever you see this icon <img src="https://docs.qgis.org/3.22/en/_images/mIconDataDefine.png" alt="" />, that means you can use a data-defined override for that parameter.</p>
+
+<p>The Data-defined assistant is an option under the Data-defined override. The Assistant makes it easier to define how the data is applied to the parameter for each feature.</p>
+
+<p>We will use the Assistant to change the size and color of the PPA marker.</p>
+
+<p><strong>LEARN MORE</strong>:</p>
+<ul>
+  <li><a href="https://docs.qgis.org/3.22/en/docs/user_manual/introduction/general_tools.html#data-defined-override-setup">Data defined override setup, QGIS Desktop User Guide/Manual</a></li>
+  <li><a href="https://docs.qgis.org/latest/en/docs/user_manual/introduction/general_tools.html#data-defined-assistant">Using the data-defined assistant interface, QGIS Desktop User Guide/Manual</a></li>
+</ul>
+
+<hr />
+<h3 id="qgis-atlas-tricks">QGIS Atlas tricks</h3>
+
+<h4 id="open-the-qgis-atlas-tricks-i-qgis-project-file-qgis-atlas-tricks-iqgz">Open the QGIS Atlas tricks I QGIS project file (QGIS Atlas tricks I.qgz).</h4>
+<ul>
+  <li>Let’s learn how to create a simple Atlas with data-defined elements (e.g. table, chart) and styling helped by Expressions.</li>
+</ul>
+
+<h4 id="open-the-qgis-atlas-tricks-ii-qgis-project-file-qgis-atlas-tricks-iiqgz">Open the QGIS Atlas tricks II QGIS project file (QGIS Atlas tricks II.qgz).</h4>
+<ul>
+  <li>Let’s learn how to create an Atlas that iterates over the same area/coverage.</li>
+</ul>
+
+<h4 id="open-the-qgis-atlas-tricks-iii-qgis-project-file-qgis-atlas-tricks-iiiqgz">Open the QGIS Atlas tricks III QGIS project file (QGIS Atlas tricks III.qgz).</h4>
+<ul>
+  <li>Let’s learn how to create an Atlas that iterates over the same area/coverage with different levels/styles with the help of Map themes.</li>
+</ul>
+
+<hr />
+<h3 id="share-everything-as-one-geopackage">Share everything as one GeoPackage</h3>
+
+<p>You can save layers, projects, styles, models, and other things in a GeoPackage.</p>
+
+<p>You can use the Package Layers algorithm to save multiple layers in one run.</p>
+
+    </section>   
+    </div>
+    
+    
+        <section class="disqus">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = "";
+        var disqus_developer = 0;
+        (function() {
+            var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true;
+            dsq.src = window.location.protocol + "//bnhr.disqus.com/embed.js";
+            (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+    
+
+    <h4 class="pt-4">You may also like:<h4>
+
+
+
+
+
+    <h5><a class="bnhr-link" href="/2021/10/01/foss4g2021-spatial-basketball.html">Towards a spatial analysis of shooting in Philippine basketball (FOSS4G2021)</a></h5>
+<p class="small post-meta-info">01 Oct 2021  ᛫ 1 min read</p>
+<p>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#foss4g"><span>foss4g</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#foss4gph"><span>foss4gph</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#qgis"><span>qgis</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#gis"><span>gis</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#presentation"><span>presentation</span></a>
+    
+</p>
+
+
+    <h5><a class="bnhr-link" href="/2021/04/30/win-unconventional-openness-community.html">Win and let win: On being unconventional, openness, and building communities</a></h5>
+<p class="small post-meta-info">30 Apr 2021  ᛫ 1 min read</p>
+<p>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#foss4g"><span>foss4g</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#foss4gph"><span>foss4gph</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#qgis"><span>qgis</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#gis"><span>gis</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#presentation"><span>presentation</span></a>
+    
+</p>
+
+
+    <h5><a class="bnhr-link" href="/2020/12/15/qgis-styles-hlurb-land-use-zoning.html">QGIS Styles based on HLURB Land Use Categories and Color Coding (CLUP Guidebook Vol 3, 2014)</a></h5>
+<p class="small post-meta-info">15 Dec 2020  ᛫ 2 min read</p>
+<p>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#foss4g"><span>foss4g</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#qgis"><span>qgis</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#qgis3"><span>qgis3</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#styles"><span>styles</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#land-use"><span>land-use</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#zoning"><span>zoning</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#hlurb"><span>hlurb</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#philippines"><span>philippines</span></a>
+    
+</p>
+
+
+    <h5><a class="bnhr-link" href="/2020/12/09/select-duplicate-geometries-layer-qgis.html">Select duplicate geometries from a layer in QGIS</a></h5>
+<p class="small post-meta-info">09 Dec 2020  ᛫ 3 min read</p>
+<p>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#foss4g"><span>foss4g</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#qgis"><span>qgis</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#qgis3"><span>qgis3</span></a>
+    
+</p>
+
+
+    <h5><a class="bnhr-link" href="/2020/11/29/get-data-from-dpwh-qgis.html">Get Data from DPWH Road and Bridge Inventory in QGIS</a></h5>
+<p class="small post-meta-info">29 Nov 2020  ᛫ 2 min read</p>
+<p>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#foss4g"><span>foss4g</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#qgis"><span>qgis</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#qgis3"><span>qgis3</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#dpwh"><span>dpwh</span></a>
+    
+        <a class="small post-meta-tag" href="/blog/tags.html#philippines"><span>philippines</span></a>
+    
+</p>
+
+
+
+</div>
+        
+
+<div class="container-fluid mt-2 py-4 bg-color-primary-light">
+    <!-- <hr class="my-4"> -->
+    <div class="container" id="support-bnhr">
+        <h2>Support BNHR</h2>
+        <p>
+        If you find my website or any of the materials I share useful, you can consider donating to the cause below.
+        </p>
+        
+        <a href='https://ko-fi.com/V7V2DF6B1' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Donate and support BNHR' /></a>
+    </div>
+    <div class="text-center py-4">
+        <h1 class="font-logo my-0 color-primary-dark">BNHR</h1>
+        <p><a class="color-primary my-0" id="contact-email-footer" href="mailto:hi@bnhr.xyz">hi@bnhr.xyz</a></p>
+        <a class="color-primary" alt="Messenger" href="https://m.me/bnhr.xyz"><i class="fab fa-facebook-messenger my-2 ml-2 mr-2 contact-fb"></i></a>
+        <a class="color-primary" alt="Mastodon-1" rel="me" href="https://mastodon.social/@benhur07b"><i class="fab fa-mastodon my-2 ml-2 mr-2 contact-fb"></i></a>
+        <a class="color-primary" alt="Mastodon-2" rel="me" href="https://fosstodon.org/@bnhrdotxyz"><i class="fab fa-mastodon my-2 ml-2 mr-2 contact-fb"></i></a>
+        <a class="color-primary" alt="Facebook" href="https://facebook.com/bnhr.xyz"><i class="fab fa-facebook-square my-2 ml-2 mr-2 contact-fb"></i></a>
+        <a class="color-primary" alt="Twitter" href="https://twitter.com/BNHRdotXYZ"><i class="fab fa-twitter-square my-2 ml-2 mr-2 contact-twitter"></i></a>
+        <a class="color-primary" alt="Youtube" href="https://youtube.com/channel/UC6S87N9SY1V6799YvxC14eA"><i class="fab fa-youtube my-2 ml-2 mr-2 contact-yt"></i></a>
+        <a class="color-primary" alt="Discord" href="https://discord.com/"><i class="fab fa-discord my-2 ml-2 mr-2 contact-discord"></i></a>
+        <a class="color-primary" alt="Linkedin" href="https://linkedin.com/in/benhur07b"><i class="fab fa-linkedin my-2 ml-2 mr-2 contact-linkedin"></i></a>
+        <a class="color-primary" alt="GitHub" href="https://github.com/benhur07b"><i class="fab fa-github my-2 ml-2 mr-2 contact-github"></i></a>
+        <a class="color-primary" alt="Subscribe to Atom link"  href="/feed.xml"><i class="fas fa-rss my-2 ml-2 mr-2 contact-rss"></i></a>
+    </div>
+    
+
+<div class="container-fluid bg-color-primary-dark">
+    <div class="container py-4">
+        <p class="small color-primary-light" style="line-height: 1.5;">
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img class="mb-2" alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
+            <br/>
+            Except when explicitly stated otherwise, this work and its contents by <a xmlns:cc="http://creativecommons.org/ns#" href="https://bnhr.xyz" property="cc:attributionName" rel="cc:attributionURL">Ben Hur S. Pintor</a> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br>
+            Other works (software, source code, etc.) referenced in this website are under their own respective licenses.<br>
+            This site is powered by <a href="https://jekyllrb.com/">Jekyll</a> and hosted on Github <a href="https://github.com/">(view source)</a>
+            </p>
+    </div>
+</div>
+        <button onclick="topFunction()" id="to-top-button" title="Go to top"><i class="fas fa-chevron-up"></i></button>
+
+<script>
+// When the user scrolls down 100px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+        document.getElementById("to-top-button").style.display = "block";
+    } else {
+        document.getElementById("to-top-button").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
+
+    </body>
+</html>

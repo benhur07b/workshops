@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Our NbS Tool</title>
+<meta name="description" content="A table's board for the Build Our NbS Tool activity: keep, don't need, wish, and five dots.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>Our table's tool</h1>
+  <p class="lead">Pick the person your table builds for. Then go through the steps: for each card choose <strong>Keep</strong>, <strong>Maybe</strong> or <strong>We don't need it</strong>; each step lets you keep only about half its cards, so keep what your person needs most. Add a wish for anything missing. Give your five dots to what matters most, and finish with the data the tool needs.</p>
+
+  <section class="panel setup" aria-label="About your table">
+    <div>
+      <label for="table-name">Our table</label>
+      <input id="table-name" type="text" placeholder="For example: Table 2, or Online">
+    </div>
+    <div>
+      <label for="session">Session</label>
+      <select id="session">
+        <option value="Morning">Morning: CRS and DENR</option>
+        <option value="Afternoon">Afternoon: NbS Support Network</option>
+      </select>
+    </div>
+    <div>
+      <label for="person">We are building for</label>
+      <select id="person"></select>
+    </div>
+    <div id="person-own-wrap" hidden>
+      <label for="person-own">Who, in your words</label>
+      <input id="person-own" type="text">
+    </div>
+  </section>
+  <div id="person-card"></div>
+
+  <div class="toolbar">
+    <span id="dots-left" class="muted" aria-live="polite"></span>
+    <span style="flex:1"></span>
+    <button class="btn" id="save-file" type="button">Download our board</button>
+    <label class="btn ghost" for="open-file" style="margin:0">Open a saved board</label>
+    <input id="open-file" type="file" accept=".json,application/json" hidden>
+    <button class="btn ghost" id="reset" type="button">Start a new board</button>
+  </div>
+  <p id="storage-note" class="notice small" hidden>This browser is not keeping the board between visits. Download it before closing the page.</p>
+
+  <ul class="steps" id="step-tabs" aria-label="Steps"></ul>
+  <div id="step-view"></div>
+</main>
+<script src="cards.js"></script>
+<script src="common.js"></script>
+<script src="board.js"></script>
+</body>
+</html>

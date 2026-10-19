@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NbS Tool Card Guide</title>
+<meta name="description" content="Every card of the Build Our NbS Tool activity, with its picture and an explanation.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>Build our NbS tool</h1>
+  <p class="lead">The NbS Map Platform's Interactive Map is the tool most people will use. We start from SCENE's NbS tool and ask, for every step: what do we keep, what don't we need, and what do we wish it had, so that it works for the Philippines.</p>
+  <h2>How it works</h2>
+  <ul class="legend" aria-label="The choices">
+    <li><span class="swatch keep"></span> Keep it</li>
+    <li><span class="swatch maybe"></span> Maybe</li>
+    <li><span class="swatch skip"></span> We don't need it</li>
+    <li><span class="swatch wish"></span> We wish it had…</li>
+  </ul>
+  <p>Each table builds the tool for one person (below). For every card, the table asks: would our person use this? Each step lets a table <strong>keep only about half of its cards</strong>, so keeping means choosing. <strong>Maybe</strong> is for cards the table is unsure about: it doesn't count either way. Anything missing becomes a <strong>wish</strong>, with the information it would need and who has it. At the end, each table has five dots for the cards and wishes that matter most, and five more for the data the tool needs most.</p>
+  <p class="muted">Each card here has the same number as the paper card on your table. Click a picture to see it larger. To try SCENE's tool yourself, open <a href="https://nbstool-beta.scenecoalition.org/interactive-map" target="_blank" rel="noopener">nbstool-beta.scenecoalition.org/interactive-map</a>.</p>
+  <h2 id="people">Who we build for</h2>
+  <p>Five people who will use or run the tool. They are made up, but their work is real: if yours is different, tell your table's host and build for someone like you.</p>
+  <div class="people" id="people-list"></div>
+  <h2 id="cards" class="step-head">The cards</h2>
+  <ul class="steps" id="step-links" aria-label="Steps"></ul>
+  <div id="guide"></div>
+</main>
+<script src="cards.js"></script>
+<script src="common.js"></script>
+<script>
+  const { el, topbar, footer, picture, sourceTag } = UI;
+  topbar();
+  const links = document.getElementById("step-links");
+  const guide = document.getElementById("guide");
+  for (const step of NBS.steps) {
+    links.append(el("li", {}, el("a", { href: "#step-" + step.id }, step.id + " " + step.title)));
+    guide.append(
+      el("section", { id: "step-" + step.id, "aria-labelledby": "h-" + step.id },
+        el("div", { class: "step-head" },
+          el("h2", { id: "h-" + step.id }, el("span", { class: "num" }, step.id), step.title),
+          el("p", { class: "question" }, step.question)),
+        el("div", { class: "grid" },
+          step.cards.map((c) => el("article", { class: "card" },
+            picture(c),
+            el("div", { class: "body" },
+              el("span", { class: "id" }, c.id),
+              el("h3", { class: "title" }, c.title),
+              el("p", { class: "text" }, c.text),
+              el("p", { class: "more" }, c.more),
+              sourceTag(c)))))));
+  }
+  const peopleList = document.getElementById("people-list");
+  for (const p of NBS.people) {
+    peopleList.append(el("article", { class: "persona" },
+      el("h3", {}, el("em", {}, p.name), ", " + p.role),
+      el("p", {}, p.story),
+      el("p", {}, el("strong", {}, "Needs: "), p.needs),
+      el("p", { class: "muted" }, p.tech)));
+  }
+  links.append(el("li", {}, el("a", { href: "#data", class: "data-tab" }, "Data we need")));
+  guide.append(el("section", { id: "data" },
+    el("div", { class: "step-head" },
+      el("h2", {}, "Data we need"),
+      el("p", { class: "question" }, "The tool can only show what it has data for. Which data does it need, can your organisation share it, and if not, where is it?")),
+    el("div", { class: "grid" },
+      NBS.data.map((d) => el("article", { class: "card" },
+        el("div", { class: "body" },
+          el("span", { class: "id" }, d.id),
+          el("h3", { class: "title" }, d.name),
+          el("p", { class: "text" }, d.text),
+          el("p", { class: "more" }, "We think it is with: " + d.holder),
+          el("p", { class: "more" }, "Used by cards: " + d.cards.join(", "))))))));
+  footer();
+</script>
+</body>
+</html>

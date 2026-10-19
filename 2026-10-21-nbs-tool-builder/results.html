@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NbS Tool Results</title>
+<meta name="description" content="Combine the tables' boards: what to keep, what we don't need, the wishes and the dots.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>What the tables chose</h1>
+  <p class="lead">Open the board files the tables downloaded (choose several at once, or drop them here). Nothing is uploaded: the files stay on this computer.</p>
+  <div class="toolbar">
+    <label class="btn" for="files" style="margin:0">Open board files</label>
+    <input id="files" type="file" accept=".json,application/json" multiple hidden>
+    <label for="filter" class="small" style="margin:0 0 0 8px">Show</label>
+    <select id="filter" style="width:auto">
+      <option value="all">Both sessions</option>
+      <option value="Morning">Morning: CRS and DENR</option>
+      <option value="Afternoon">Afternoon: NbS Support Network</option>
+    </select>
+    <span style="flex:1"></span>
+    <button class="btn ghost" id="csv" type="button" disabled>Download as a spreadsheet (CSV)</button>
+    <button class="btn ghost" id="clear" type="button" disabled>Clear</button>
+  </div>
+  <div id="drop" class="notice">No boards yet. Drop board files anywhere on this page.</div>
+  <div id="boards"></div>
+  <div id="out"></div>
+</main>
+<script src="cards.js"></script>
+<script src="common.js"></script>
+<script src="results.js"></script>
+</body>
+</html>
