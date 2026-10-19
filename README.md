@@ -11,7 +11,7 @@ One folder per workshop, named after its date and subject (`YYYY-MM-DD-name`), e
 | `2026-10-21-nbs-tool-builder/` | Build Our NbS Tool, the activity website of the Consultation Workshop on the National NbS Web Platform (21 October 2026). See its README |
 | `pnm21-qgis-workshop/` | Pista ng Mapa 2021 QGIS Workshop. A static copy of the pages first published on the main bnhr.xyz site; its links to the blog, services and site assets point to the main site |
 
-`index.html` lists the workshops: add a line there for each new folder. `assets/` holds the index page's logo, icon and fonts. `.nojekyll` tells GitHub Pages to serve the files as they are.
+`index.html` lists the workshops: add a line there for each new folder. `assets/` holds the index page's logo, icon, fonts and link-preview image (`share.png`). `.nojekyll` tells GitHub Pages to serve the files as they are.
 
 ## Publishing
 
