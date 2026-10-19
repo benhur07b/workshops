@@ -3,76 +3,98 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NbS Tool Card Guide</title>
-<meta name="description" content="Every card of the Build Our NbS Tool activity, with its picture and an explanation.">
+<title>Build Our NbS Tool</title>
+<meta name="description" content="How the Build Our NbS Tool activity works, step by step, for participants and table hosts.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main>
-  <h1>Build our NbS tool</h1>
-  <p class="lead">The NbS Map Platform's Interactive Map is the tool most people will use. We start from SCENE's NbS tool and ask, for every step: what do we keep, what don't we need, and what do we wish it had, so that it works for the Philippines.</p>
-  <h2>How it works</h2>
-  <ul class="legend" aria-label="The choices">
-    <li><span class="swatch keep"></span> Keep it</li>
-    <li><span class="swatch maybe"></span> Maybe</li>
-    <li><span class="swatch skip"></span> We don't need it</li>
-    <li><span class="swatch wish"></span> We wish it had…</li>
-  </ul>
-  <p>Each table builds the tool for one person (below). For every card, the table asks: would our person use this? Each step lets a table <strong>keep only about half of its cards</strong>, so keeping means choosing. <strong>Maybe</strong> is for cards the table is unsure about: it doesn't count either way. Anything missing becomes a <strong>wish</strong>, with the information it would need and who has it. At the end, each table has five dots for the cards and wishes that matter most, and five more for the data the tool needs most.</p>
-  <p class="muted">Each card here has the same number as the paper card on your table. Click a picture to see it larger. To try SCENE's tool yourself, open <a href="https://nbstool-beta.scenecoalition.org/interactive-map" target="_blank" rel="noopener">nbstool-beta.scenecoalition.org/interactive-map</a>.</p>
-  <h2 id="people">Who we build for</h2>
-  <p>Five people who will use or run the tool. They are made up, but their work is real: if yours is different, tell your table's host and build for someone like you.</p>
-  <div class="people" id="people-list"></div>
-  <h2 id="cards" class="step-head">The cards</h2>
-  <ul class="steps" id="step-links" aria-label="Steps"></ul>
-  <div id="guide"></div>
+<main class="howto">
+  <h1>Build our <em>NbS tool</em>.</h1>
+  <p class="lead">The Interactive Map is the part of the NbS Map Platform most people will use, and the part we build ourselves. Starting from SCeNe's NbS tool, each table builds its own version for the Philippines, for one person, step by step: what do we keep, what don't we need, and what do we wish it had?</p>
+
+  <nav class="jump" aria-label="On this page">
+    <a class="btn" href="#participants">For participants</a>
+    <a class="btn ghost" href="#hosts">For table hosts</a>
+    <a class="btn ghost" href="#schedule">The schedule</a>
+  </nav>
+
+  <section id="participants">
+    <h2>For participants</h2>
+    <p>Everything happens on this website. Your table builds on one laptop: one person clicks, and everyone decides together. You can follow along on your phone too.</p>
+    <ol class="howto-steps">
+      <li><h3>Choose your person</h3><p>Open <a href="board.html">Build our tool</a> and pick who your table builds for: Ana, Jun, Liza, Rosa or Paolo. Read their story together. At every card, ask: <strong>would our person use this?</strong> Their stories are also in the <a href="cards.html#people">card guide</a>.</p></li>
+      <li><h3>Watch the step</h3><p>In each round, BNHR shows one step of SCeNe's tool on the big screen. If you like, try it yourself on your phone in <a href="https://nbstool-beta.scenecoalition.org/interactive-map" target="_blank" rel="noopener">SCeNe's interactive map</a>, or look at the step's cards in the <a href="cards.html#cards">card guide</a>. Nobody has to.</p></li>
+      <li><h3>Choose for each card</h3><p>On your board, mark every card of the step:</p>
+        <ul class="legend" aria-label="The choices">
+          <li><span class="swatch keep"></span> <strong>Keep</strong>: our person needs this</li>
+          <li><span class="swatch maybe"></span> <strong>Maybe</strong>: we're not sure; it doesn't count either way</li>
+          <li><span class="swatch skip"></span> <strong>We don't need it</strong>: our person wouldn't use it</li>
+        </ul>
+      </li>
+      <li><h3>Use your keeps wisely</h3><p>Your table can keep <strong><span data-rule="keeps"></span> of the <span data-rule="cards"></span> cards</strong>, counted across all the steps together. Keep more in the steps that matter most to your person, but don't spend them all in the first steps. Your board shows how many keeps are left; changing a Keep to Maybe frees one up.</p></li>
+      <li><h3>Add your wishes</h3><p>Is something missing? Add a <span class="swatch wish"></span> <strong>wish</strong> at the bottom of the step: what it is, what information it would need, and who has that information.</p></li>
+      <li><h3>Give your priority dots</h3><p>Your table has two kinds of priority dots. <strong><span data-rule="cardDots"></span> card dots</strong> go on the kept cards and wishes that matter most. <strong><span data-rule="dataDots"></span> data dots</strong> go on the data the tool needs most. Put several on one if it matters a lot.</p></li>
+      <li><h3>Tell us about the data</h3><p>In the <strong>Data we need</strong> tab, for each kind of data: do we need it, why, can your organisation share it, and if not, where is it? Add any data that's missing from the list, including your own NbS projects.</p></li>
+      <li><h3>Hand it in</h3><p>When BNHR asks, your host clicks <strong>Download our board</strong> and sends the file to BNHR. All the tables' boards then appear together on the big screen.</p></li>
+    </ol>
+    <p class="notice"><strong>Joining online?</strong> Do the same on your own computer: open <a href="board.html">Build our tool</a>, and your online host will guide you through the call.</p>
+  </section>
+
+  <section id="hosts">
+    <h2>For table hosts</h2>
+    <p>You help your table through the rounds, keep time and make sure everyone is heard. You don't need to know the tool: the cards explain themselves.</p>
+    <h3>Before the session</h3>
+    <ol class="howto-list">
+      <li>Open <a href="board.html">Build our tool</a> on your table's laptop and keep the tab open all session. Once it's open, the board keeps working without internet and is saved in the laptop's browser.</li>
+      <li>Type your table's name (for example, Table 2) and choose the session.</li>
+      <li>Read the five people's stories in the <a href="cards.html#people">card guide</a>, and skim the cards.</li>
+      <li>Check with BNHR how to send your board file: the shared folder or the group chat.</li>
+    </ol>
+    <h3>During the rounds</h3>
+    <ol class="howto-list">
+      <li>Help the table choose its person first, and read the story aloud.</li>
+      <li>Keep to time: about 12 minutes a round, and about 6 of those for choosing. Round 2 (What's there) has 15 cards: share them out, one person reading each card aloud.</li>
+      <li>Ask at every card: would our person use this? If the table can't agree, choose Maybe or write a wish and move on.</li>
+      <li>Remind the table about its keeps early: <span data-rule="keeps"></span> for the whole board, not per step.</li>
+      <li>Make sure quieter people get a turn, and that the person clicking isn't the one deciding.</li>
+    </ol>
+    <h3>At the end</h3>
+    <ol class="howto-list">
+      <li>Help the table give its <span data-rule="cardDots"></span> card dots, then click <strong>Download our board</strong> and send the file to BNHR.</li>
+      <li>After the Data we need tab, download the board again and send the new file: it replaces the first one.</li>
+      <li>Between the sessions, once BNHR has your file, click <strong>Start a new board</strong> and choose the afternoon session.</li>
+    </ol>
+    <h3>If something goes wrong</h3>
+    <ul class="howto-list">
+      <li><strong>The internet drops:</strong> carry on; the open board keeps working. Only SCeNe and the demo need internet.</li>
+      <li><strong>The laptop fails:</strong> use the printed backup set and write the choices down; enter them on another laptop afterwards.</li>
+      <li><strong>The board looks empty after reopening:</strong> open the laptop's browser that was used before; the board is saved there. If you downloaded it, use <strong>Open a saved board</strong>.</li>
+    </ul>
+    <p class="notice"><strong>Online host:</strong> share the board on screen in the call, read the group's top wishes aloud at the read-back, and send the board file like the other hosts.</p>
+  </section>
+
+  <section id="schedule">
+    <h2>The schedule</h2>
+    <div class="table-wrap">
+      <table class="results">
+        <thead><tr><th>Morning</th><th>Afternoon</th><th>What happens</th></tr></thead>
+        <tbody>
+          <tr><td>9:45–10:10</td><td>13:35–14:00</td><td>Why GeoNode, and what we build; a look at SCeNe's tool on Borongan</td></tr>
+          <tr><td>10:10–10:35</td><td>14:00–14:25</td><td>Round 1: Choose a place · Round 2: What's there</td></tr>
+          <tr><td>10:35–10:45</td><td>14:25–14:35</td><td>Break</td></tr>
+          <tr><td>10:45–11:15</td><td>14:35–15:05</td><td>Round 3: Threats · Round 4: What NbS could work · Round 5: Take it home, and Keeping it running</td></tr>
+          <tr><td>11:15–11:30</td><td>15:05–15:20</td><td>Card dots, then all tables' results on the big screen</td></tr>
+          <tr><td>11:30–11:45</td><td>15:20–15:35</td><td>Data we need, and how we work together</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 </main>
 <script src="cards.js"></script>
 <script src="common.js"></script>
 <script>
-  const { el, topbar, footer, picture, sourceTag } = UI;
-  topbar();
-  const links = document.getElementById("step-links");
-  const guide = document.getElementById("guide");
-  for (const step of NBS.steps) {
-    links.append(el("li", {}, el("a", { href: "#step-" + step.id }, step.id + " " + step.title)));
-    guide.append(
-      el("section", { id: "step-" + step.id, "aria-labelledby": "h-" + step.id },
-        el("div", { class: "step-head" },
-          el("h2", { id: "h-" + step.id }, el("span", { class: "num" }, step.id), step.title),
-          el("p", { class: "question" }, step.question)),
-        el("div", { class: "grid" },
-          step.cards.map((c) => el("article", { class: "card" },
-            picture(c),
-            el("div", { class: "body" },
-              el("span", { class: "id" }, c.id),
-              el("h3", { class: "title" }, c.title),
-              el("p", { class: "text" }, c.text),
-              el("p", { class: "more" }, c.more),
-              sourceTag(c)))))));
-  }
-  const peopleList = document.getElementById("people-list");
-  for (const p of NBS.people) {
-    peopleList.append(el("article", { class: "persona" },
-      el("h3", {}, el("em", {}, p.name), ", " + p.role),
-      el("p", {}, p.story),
-      el("p", {}, el("strong", {}, "Needs: "), p.needs),
-      el("p", { class: "muted" }, p.tech)));
-  }
-  links.append(el("li", {}, el("a", { href: "#data", class: "data-tab" }, "Data we need")));
-  guide.append(el("section", { id: "data" },
-    el("div", { class: "step-head" },
-      el("h2", {}, "Data we need"),
-      el("p", { class: "question" }, "The tool can only show what it has data for. Which data does it need, can your organisation share it, and if not, where is it?")),
-    el("div", { class: "grid" },
-      NBS.data.map((d) => el("article", { class: "card" },
-        el("div", { class: "body" },
-          el("span", { class: "id" }, d.id),
-          el("h3", { class: "title" }, d.name),
-          el("p", { class: "text" }, d.text),
-          el("p", { class: "more" }, "We think it is with: " + d.holder),
-          el("p", { class: "more" }, "Used by cards: " + d.cards.join(", "))))))));
-  footer();
+  UI.topbar();
+  UI.footer();
 </script>
 </body>
 </html>

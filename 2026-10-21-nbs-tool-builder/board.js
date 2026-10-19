@@ -1,6 +1,7 @@
-// A table's board. For each card: Keep, Maybe or We don't need it, with a limit on
-// keeps per step so a table can't keep everything; wishes per step; five dots for the
-// kept cards and wishes; and a data tab with its own five dots.
+// A table's board. For each card: Keep, Maybe or We don't need it, with one limit on
+// keeps for the whole board so a table can't keep everything but can favour some
+// steps over others; wishes per step; and two pools of priority dots: card dots for
+// the kept cards and wishes, and data dots on the data tab. The limits are rules in cards.js.
 // The board lives in the browser (when it can) and travels as a downloaded file,
 // which the results page combines with the other tables' files.
 
@@ -8,7 +9,8 @@
   const { el, topbar, footer, picture, sourceTag, allCards, store, download, keepLimit, personById, SHARE } = UI;
   // Pages on one github.io address share browser storage, so the key names this workshop.
   const KEY = "2026-10-21-nbs-tool-builder/board-v2";
-  const DOTS = 5;
+  const { cardDots: CARD_DOTS, dataDots: DATA_DOTS } = NBS.rules;
+  const KEEPS = keepLimit();
   const DATA_TAB = "data";
   const CARDS = new Map(allCards().map((c) => [c.id, c]));
   const DATA = new Map(NBS.data.map((d) => [d.id, d]));
@@ -27,7 +29,7 @@
   }
 
   // A file someone opens may be old, hand-edited or from another tool: keep only what fits,
-  // and never let it break the rules (keeps per step, five dots each).
+  // and never let it break the rules (the keep limit and the two dot pools).
   function clean(raw) {
     const b = blank();
     if (!raw || typeof raw !== "object") return b;
@@ -35,13 +37,11 @@
     if (raw.session === "Morning" || raw.session === "Afternoon") b.session = raw.session;
     if (personById(raw.person) || raw.person === "own") b.person = raw.person;
     b.personOwn = str(raw.personOwn);
-    for (const step of NBS.steps) {
-      let keeps = 0;
-      for (const c of step.cards) {
-        const v = raw.choices?.[c.id];
-        if (v === "keep" && keeps < keepLimit(step)) { b.choices[c.id] = "keep"; keeps++; }
-        else if (v === "maybe" || v === "skip") b.choices[c.id] = v;
-      }
+    let keeps = 0;
+    for (const c of CARDS.values()) {
+      const v = raw.choices?.[c.id];
+      if (v === "keep" && keeps < KEEPS) { b.choices[c.id] = "keep"; keeps++; }
+      else if (v === "maybe" || v === "skip") b.choices[c.id] = v;
     }
     const steps = new Set(NBS.steps.map((s) => s.id));
     for (const w of Array.isArray(raw.wishes) ? raw.wishes : []) {
@@ -51,16 +51,16 @@
     for (const d of Array.isArray(raw.dataOwn) ? raw.dataOwn : []) {
       if (d && str(d.name).trim()) b.dataOwn.push(Object.assign({ id: str(d.id) || newId("d"), name: d.name }, cleanDataAnswer(d), { need: "need" }));
     }
-    const dotsFor = (src, allowed) => {
-      const out = {}; let left = DOTS;
+    const dotsFor = (src, allowed, max) => {
+      const out = {}; let left = max;
       for (const [id, n] of Object.entries(src || {})) {
         const k = Math.max(0, Math.min(left, Math.floor(Number(n) || 0)));
         if (allowed(id) && k) { out[id] = k; left -= k; }
       }
       return out;
     };
-    b.dots = dotsFor(raw.dots, (id) => b.choices[id] === "keep" || b.wishes.some((w) => w.id === id));
-    b.dataDots = dotsFor(raw.dataDots, (id) => b.data[id]?.need === "need" || b.dataOwn.some((d) => d.id === id));
+    b.dots = dotsFor(raw.dots, (id) => b.choices[id] === "keep" || b.wishes.some((w) => w.id === id), CARD_DOTS);
+    b.dataDots = dotsFor(raw.dataDots, (id) => b.data[id]?.need === "need" || b.dataOwn.some((d) => d.id === id), DATA_DOTS);
     if (steps.has(raw.step) || raw.step === DATA_TAB) b.step = raw.step;
     return b;
   }
@@ -70,7 +70,7 @@
 
   function save() { store.set(KEY, board); }
   const used = (dots) => Object.values(dots).reduce((a, n) => a + n, 0);
-  const keepsIn = (step) => step.cards.filter((c) => board.choices[c.id] === "keep").length;
+  const keepsUsed = () => Object.values(board.choices).filter((v) => v === "keep").length;
 
   // About the table
   const tableName = document.getElementById("table-name");
@@ -122,27 +122,27 @@
       el("li", {}, el("button", { type: "button", class: "data-tab", "aria-pressed": String(board.step === DATA_TAB), onclick: () => go(DATA_TAB) }, "Data we need")));
   }
 
-  function dotControl(pool, id, label) {
+  function dotControl(pool, max, id, label) {
     const n = pool[id] || 0;
     return el("div", { class: "dots", role: "group", "aria-label": "Dots for " + label },
       el("button", { type: "button", "aria-label": "Take a dot from " + label, disabled: n === 0, onclick: () => { if (n > 1) pool[id] = n - 1; else delete pool[id]; save(); render(); } }, "−"),
       el("span", { class: "n" }, n ? Array.from({ length: n }, () => el("span", { class: "dot" })) : "0"),
-      el("button", { type: "button", "aria-label": "Give a dot to " + label, disabled: used(pool) >= DOTS, onclick: () => { pool[id] = n + 1; save(); render(); } }, "+"));
+      el("button", { type: "button", "aria-label": "Give a dot to " + label, disabled: used(pool) >= max, onclick: () => { pool[id] = n + 1; save(); render(); } }, "+"));
   }
 
-  function choiceButtons(step, card) {
+  function choiceButtons(card) {
     const current = board.choices[card.id];
-    const full = keepsIn(step) >= keepLimit(step) && current !== "keep";
+    const full = keepsUsed() >= KEEPS && current !== "keep";
     const set = (v) => {
       if (current === v) delete board.choices[card.id]; else board.choices[card.id] = v;
       if (board.choices[card.id] !== "keep") delete board.dots[card.id];
       save(); render();
     };
     return el("div", { class: "choices" },
-      el("button", { type: "button", class: "choice keep", "aria-pressed": String(current === "keep"), disabled: full, title: full ? "No keeps left in this step: change another card to Maybe first" : null, onclick: () => set("keep") }, "Keep"),
+      el("button", { type: "button", class: "choice keep", "aria-pressed": String(current === "keep"), disabled: full, title: full ? "No keeps left: change another card to Maybe first" : null, onclick: () => set("keep") }, "Keep"),
       el("button", { type: "button", class: "choice maybe", "aria-pressed": String(current === "maybe"), onclick: () => set("maybe") }, "Maybe"),
       el("button", { type: "button", class: "choice skip", "aria-pressed": String(current === "skip"), onclick: () => set("skip") }, "We don't need it"),
-      current === "keep" ? dotControl(board.dots, card.id, card.title) : null);
+      current === "keep" ? dotControl(board.dots, CARD_DOTS, card.id, card.title) : null);
   }
 
   function wishCard(w) {
@@ -154,7 +154,7 @@
         w.who ? el("p", { class: "text" }, el("strong", {}, "Who has it: "), w.who) : null,
         el("div", { class: "choices" },
           el("button", { type: "button", class: "btn ghost", onclick: () => { if (confirm("Remove this wish?")) { board.wishes = board.wishes.filter((x) => x.id !== w.id); delete board.dots[w.id]; save(); render(); } } }, "Remove"),
-          dotControl(board.dots, w.id, w.text))));
+          dotControl(board.dots, CARD_DOTS, w.id, w.text))));
   }
 
   function wishForm(step) {
@@ -183,15 +183,14 @@
   }
 
   function renderStep(step) {
-    const limit = keepLimit(step);
-    const left = limit - keepsIn(step);
+    const left = KEEPS - keepsUsed();
     const order = [...NBS.steps, { id: DATA_TAB, title: "Data we need" }];
     view.replaceChildren(
       el("div", { class: "step-head" },
         el("h2", {}, el("span", { class: "num" }, step.id), step.title),
         el("p", { class: "question" }, step.question),
         el("p", { class: "keeps", "aria-live": "polite" },
-          el("strong", {}, "Keep up to " + limit + " of these " + step.cards.length + " cards. "),
+          el("strong", {}, "Keep up to " + KEEPS + " of all " + CARDS.size + " cards, across all steps. "),
           left ? left + (left === 1 ? " keep left. " : " keeps left. ") : "No keeps left: change one to Maybe to keep another. ",
           "Not sure? Choose Maybe.")),
       el("div", { class: "grid" },
@@ -202,7 +201,7 @@
             el("h3", { class: "title" }, c.title),
             el("p", { class: "text" }, c.text),
             sourceTag(c),
-            choiceButtons(step, c)))),
+            choiceButtons(c)))),
         board.wishes.filter((w) => w.step === step.id).map(wishCard)),
       wishForm(step),
       pager(order.indexOf(step), order, (s) => s.title));
@@ -240,7 +239,7 @@
             el("input", { id: "where-" + d.id, type: "text", value: a.where, placeholder: d.holder || "Office, agency or website", oninput: (e) => set("where", e.target.value) }))) : null,
         el("div", { class: "choices" },
           isOwn ? el("button", { type: "button", class: "btn ghost", onclick: () => { if (confirm("Remove this data?")) { board.dataOwn = board.dataOwn.filter((x) => x.id !== d.id); delete board.dataDots[d.id]; save(); render(); } } }, "Remove") : null,
-          a.need === "need" ? dotControl(board.dataDots, d.id, d.name) : null)));
+          a.need === "need" ? dotControl(board.dataDots, DATA_DOTS, d.id, d.name) : null)));
   }
 
   function dataForm() {
@@ -263,12 +262,12 @@
   }
 
   function renderData() {
-    const left = DOTS - used(board.dataDots);
+    const left = DATA_DOTS - used(board.dataDots);
     view.replaceChildren(
       el("div", { class: "step-head" },
         el("h2", {}, "Data we need"),
         el("p", { class: "question" }, "The tool can only show what it has data for. Which data does it need, can your organisation share it, and if not, where is it?"),
-        el("p", { class: "keeps" }, el("strong", {}, "You have five data dots, separate from the card dots. "), "Give them to the data the tool needs most. " + (left === 1 ? "1 data dot left." : left + " data dots left."))),
+        el("p", { class: "keeps" }, el("strong", {}, "You have " + DATA_DOTS + " data dots, separate from the card dots. "), "Give them to the data the tool needs most. " + (left === 1 ? "1 data dot left." : left + " data dots left."))),
       el("div", { class: "grid" },
         NBS.data.map((d) => dataRow(d, board.data[d.id] || (board.data[d.id] = cleanDataAnswer({})), false)),
         board.dataOwn.map((d) => dataRow(d, d, true))),
@@ -279,8 +278,8 @@
   function render() {
     renderTabs();
     if (board.step === DATA_TAB) renderData(); else renderStep(NBS.steps.find((s) => s.id === board.step));
-    const left = DOTS - used(board.dots);
-    dotsLeft.textContent = (left === 1 ? "1 card dot" : left + " card dots") + " and " + (DOTS - used(board.dataDots)) + " data dots left";
+    const plural = (n, one, many) => n + " " + (n === 1 ? one : many);
+    dotsLeft.textContent = "Left: " + plural(KEEPS - keepsUsed(), "keep", "keeps") + ", " + plural(CARD_DOTS - used(board.dots), "card dot", "card dots") + ", " + plural(DATA_DOTS - used(board.dataDots), "data dot", "data dots");
   }
 
   // Files

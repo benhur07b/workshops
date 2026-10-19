@@ -232,3 +232,17 @@ dialog.zoom::backdrop { background: rgba(12, 35, 64, 0.7); }
   h1 { font-size: 1.7rem; }
   .card .pic { height: 140px; }
 }
+
+/* How it works */
+.howto h1 em { font-style: normal; background: var(--orange); padding: 0 0.12em; border-radius: 0.12em; }
+.howto section { margin-top: 40px; }
+.jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
+.howto-steps { list-style: none; counter-reset: step; padding: 0; margin: 16px 0; display: grid; gap: 12px; }
+.howto-steps > li { counter-increment: step; position: relative; background: var(--white); border-radius: var(--radius); padding: 14px 18px 14px 64px; box-shadow: 0 1px 3px rgba(12, 35, 64, 0.12); }
+.howto-steps > li::before { content: counter(step); position: absolute; left: 16px; top: 14px; width: 34px; height: 34px; border-radius: 8px; background: var(--navy); color: var(--white); font-family: var(--font-title); font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.howto-steps h3 { margin: 4px 0 4px; }
+.howto-steps p { margin: 0 0 6px; }
+.howto-steps .legend { flex-direction: column; gap: 6px; margin: 6px 0 0; }
+.howto-list { padding-left: 1.4em; display: grid; gap: 6px; }
+.howto .swatch { vertical-align: -3px; }
+.howto-steps .legend li { display: block; }

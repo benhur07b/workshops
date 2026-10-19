@@ -18,6 +18,15 @@ window.NBS = {
 
   // The people a table builds for. Each table picks one, so its choices are about
   // someone's real work rather than "everything for everyone".
+  // The board's limits, for the whole board rather than per step: a table may keep
+  // this share of all the cards, so it can weigh one step more than another.
+  // Priority dots come in two pools: card dots (kept cards and wishes) and data dots.
+  rules: {
+    keepShare: 0.75,
+    cardDots: 15,
+    dataDots: 10,
+  },
+
   people: [
     { id: "ana", name: "Ana", role: "city planner in Borongan", story: "Ana works in the city planning office and is updating the city's climate and land use plans. Next month Ana has to tell the city council which barangays flood most and which nature-based solutions could help there.", needs: "Barangay-level answers, in plain words, that can be printed and brought to a meeting.", tech: "Not a map specialist. Uses an office laptop and a phone." },
     { id: "jun", name: "Jun", role: "technical officer at DENR-CCS", story: "Jun is building the national picture of nature-based solutions so they can grow beyond the three pilot cities. Jun writes policy briefs and reports that need numbers and maps to back them up.", needs: "Where NbS projects are across the country, what hazards and ecosystems they address, and data that can be cited.", tech: "Comfortable with maps; sometimes uses QGIS." },

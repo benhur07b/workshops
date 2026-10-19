@@ -2,7 +2,8 @@
 
 (function () {
   const PAGES = [
-    ["index.html", "Card guide"],
+    ["index.html", "How it works"],
+    ["cards.html", "Card guide"],
     ["board.html", "Build our tool"],
     ["results.html", "Results"],
     ["print.html", "Print cards"],
@@ -23,7 +24,14 @@
     return node;
   }
 
+  // Numbers in the page text come from the rules in cards.js, so the text can't drift from the board.
+  function fillRules() {
+    const values = { keeps: keepLimit(), cards: allCards().length, cardDots: window.NBS.rules.cardDots, dataDots: window.NBS.rules.dataDots };
+    for (const node of document.querySelectorAll("[data-rule]")) node.textContent = values[node.dataset.rule];
+  }
+
   function topbar() {
+    fillRules();
     const here = location.pathname.split("/").pop() || "index.html";
     const bar = el("header", { class: "topbar" },
       el("a", { class: "brand", href: "index.html" }, el("img", { src: "img/logo-on-navy.svg", alt: "BNHR" }), "Build Our NbS Tool"),
@@ -92,9 +100,8 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  // Each step lets a table keep about half its cards, so keeping means choosing.
-  // A step can set its own limit with keepLimit in cards.js.
-  function keepLimit(step) { return step.keepLimit || Math.ceil(step.cards.length / 2); }
+  // How many cards a table may keep across the whole board: rules.keepShare of all cards.
+  function keepLimit() { return Math.round(window.NBS.rules.keepShare * allCards().length); }
 
   function personById(id) { return window.NBS.people.find((p) => p.id === id) || null; }
 
