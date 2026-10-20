@@ -153,6 +153,19 @@ footer.site .credit { flex-basis: 100%; font-size: 0.85rem; color: color-mix(in 
 .card.data .data-fields { display: grid; gap: 8px; margin-top: 6px; }
 .keeps { margin: 6px 0 0; padding: 8px 12px; background: var(--white); border-left: 4px solid var(--green); border-radius: 6px; }
 ul.keeps { padding-left: 32px; display: grid; gap: 2px; }
+
+/* Notes on a card: a reason is required for We don't need it, optional otherwise */
+.note-form { display: grid; gap: 6px; margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: var(--blue-pale); }
+.note-form.skip { background: var(--grey-pale); }
+.note-form label { margin: 0; }
+.note-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.note-msg { margin: 0; color: var(--red); font-weight: 600; }
+.note { margin-top: 6px; padding: 8px 10px; border-radius: 8px; background: var(--paper); }
+.note p { margin: 0; }
+.link { background: none; border: 0; padding: 0; color: var(--blue); text-decoration: underline; cursor: pointer; align-self: flex-start; font-size: 0.95rem; }
+td.notes { min-width: 16em; }
+td.notes p { margin: 0 0 6px; }
+td.notes .why-not { border-left: 3px solid var(--grey); padding-left: 6px; }
 .data-tab { border-color: var(--orange) !important; }
 .data-tab[aria-pressed="true"] { background: var(--orange) !important; color: var(--navy) !important; }
 

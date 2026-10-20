@@ -2,13 +2,15 @@
 // keeps for the whole board so a table can't keep everything but can favour some
 // steps over others; wishes per step; and two pools of priority dots: card dots for
 // the kept cards and wishes, and data dots on the data tab. The limits are rules in cards.js.
+// A choice carries its note ({ pick, note }): optional for Keep and Maybe, required for
+// We don't need it. Only the note form and clean() write a skip, so none is saved without a reason.
 // The board lives in the browser (when it can) and travels as a downloaded file,
 // which the results page combines with the other tables' files.
 
 (function () {
   const { el, topbar, footer, picture, sourceTag, allCards, store, download, keepLimit, personById, SHARE } = UI;
   // Pages on one github.io address share browser storage, so the key names this workshop.
-  const KEY = "2026-10-21-nbs-tool-builder/board-v2";
+  const KEY = "2026-10-21-nbs-tool-builder/board-v3";
   const { cardDots: CARD_DOTS, dataDots: DATA_DOTS } = NBS.rules;
   const KEEPS = keepLimit();
   const DATA_TAB = "data";
@@ -18,7 +20,7 @@
   const NEEDS = ["need", "maybe", "skip"];
 
   function blank() {
-    return { version: 2, table: "", session: "Morning", person: NBS.people[0].id, personOwn: "", choices: {}, wishes: [], dots: {}, data: {}, dataOwn: [], dataDots: {}, step: NBS.steps[0].id };
+    return { version: 3, table:"", session: "Morning", person: NBS.people[0].id, personOwn: "", choices: {}, wishes: [], dots: {}, data: {}, dataOwn: [], dataDots: {}, step: NBS.steps[0].id };
   }
 
   const str = (v) => (typeof v === "string" ? v : "");
@@ -40,8 +42,9 @@
     let keeps = 0;
     for (const c of CARDS.values()) {
       const v = raw.choices?.[c.id];
-      if (v === "keep" && keeps < KEEPS) { b.choices[c.id] = "keep"; keeps++; }
-      else if (v === "maybe" || v === "skip") b.choices[c.id] = v;
+      const note = str(v?.note).trim();
+      if (v?.pick === "keep" && keeps < KEEPS) { b.choices[c.id] = { pick: "keep", note }; keeps++; }
+      else if (v?.pick === "maybe" || (v?.pick === "skip" && note)) b.choices[c.id] = { pick: v.pick, note };
     }
     const steps = new Set(NBS.steps.map((s) => s.id));
     for (const w of Array.isArray(raw.wishes) ? raw.wishes : []) {
@@ -59,7 +62,7 @@
       }
       return out;
     };
-    b.dots = dotsFor(raw.dots, (id) => b.choices[id] === "keep" || b.wishes.some((w) => w.id === id), CARD_DOTS);
+    b.dots = dotsFor(raw.dots, (id) => b.choices[id]?.pick === "keep" || b.wishes.some((w) => w.id === id), CARD_DOTS);
     b.dataDots = dotsFor(raw.dataDots, (id) => b.data[id]?.need === "need" || b.dataOwn.some((d) => d.id === id), DATA_DOTS);
     if (steps.has(raw.step) || raw.step === DATA_TAB) b.step = raw.step;
     return b;
@@ -70,7 +73,9 @@
 
   function save() { store.set(KEY, board); }
   const used = (dots) => Object.values(dots).reduce((a, n) => a + n, 0);
-  const keepsUsed = () => Object.values(board.choices).filter((v) => v === "keep").length;
+  const keepsUsed = () => Object.values(board.choices).filter((v) => v.pick === "keep").length;
+  // The card whose note form is open: { id, pick, draft }. The draft survives re-renders.
+  let editing = null;
 
   // About the table
   const tableName = document.getElementById("table-name");
@@ -130,19 +135,64 @@
       el("button", { type: "button", "aria-label": "Give a dot to " + label, disabled: used(pool) >= max, onclick: () => { pool[id] = n + 1; save(); render(); } }, "+"));
   }
 
+  function choose(card, pick, note) {
+    board.choices[card.id] = { pick, note };
+    if (pick !== "keep") delete board.dots[card.id];
+    editing = null; save(); render();
+  }
+
+  function openNote(card, pick, draft) {
+    editing = { id: card.id, pick, draft };
+    render();
+    document.getElementById("note-" + card.id)?.focus();
+  }
+
+  // A note explains one choice, so a new choice starts without one. Keep and Maybe are saved
+  // at once; We don't need it opens the note form first and is saved only with a reason.
+  // Clicking the current choice clears it. Either way, a written note is lost only after asking.
   function choiceButtons(card) {
     const current = board.choices[card.id];
-    const full = keepsUsed() >= KEEPS && current !== "keep";
-    const set = (v) => {
-      if (current === v) delete board.choices[card.id]; else board.choices[card.id] = v;
-      if (board.choices[card.id] !== "keep") delete board.dots[card.id];
-      save(); render();
+    const pick = current?.pick;
+    const full = keepsUsed() >= KEEPS && pick !== "keep";
+    const press = (v) => {
+      if (current?.note && !confirm(pick === v ? "Clear this choice and its note?" : "Change the choice? Its note will be cleared.")) return;
+      if (pick === v) { delete board.choices[card.id]; delete board.dots[card.id]; editing = null; save(); render(); }
+      else if (v === "skip") openNote(card, "skip", "");
+      else choose(card, v, "");
     };
     return el("div", { class: "choices" },
-      el("button", { type: "button", class: "choice keep", "aria-pressed": String(current === "keep"), disabled: full, title: full ? "No keeps left: change another card to Maybe first" : null, onclick: () => set("keep") }, "Keep"),
-      el("button", { type: "button", class: "choice maybe", "aria-pressed": String(current === "maybe"), onclick: () => set("maybe") }, "Maybe"),
-      el("button", { type: "button", class: "choice skip", "aria-pressed": String(current === "skip"), onclick: () => set("skip") }, "We don't need it"),
-      current === "keep" ? dotControl(board.dots, CARD_DOTS, card.id, card.title) : null);
+      el("button", { type: "button", class: "choice keep", "aria-pressed": String(pick === "keep"), disabled: full, title: full ? "No keeps left: change another card to Maybe first" : null, onclick: () => press("keep") }, "Keep"),
+      el("button", { type: "button", class: "choice maybe", "aria-pressed": String(pick === "maybe"), onclick: () => press("maybe") }, "Maybe"),
+      el("button", { type: "button", class: "choice skip", "aria-pressed": String(pick === "skip"), onclick: () => press("skip") }, "We don't need it"),
+      pick === "keep" ? dotControl(board.dots, CARD_DOTS, card.id, card.title) : null);
+  }
+
+  function noteBlock(card) {
+    const current = board.choices[card.id];
+    if (editing?.id === card.id) {
+      const required = editing.pick === "skip";
+      const who = personById(board.person)?.name || "your person";
+      const text = el("textarea", { id: "note-" + card.id, rows: 2, placeholder: required ? "A few words are enough" : "For example: keep it, but with official flood maps", oninput: (e) => { editing.draft = e.target.value; } }, editing.draft);
+      const msg = el("p", { class: "note-msg", hidden: true }, "Say why in a few words, then save.");
+      return el("form", { class: "note-form" + (required ? " skip" : ""), onsubmit: (e) => {
+          e.preventDefault();
+          const note = text.value.trim();
+          if (required && !note) { msg.hidden = false; text.focus(); return; }
+          choose(card, editing.pick, note);
+        } },
+        el("label", { for: "note-" + card.id }, required ? "Why wouldn't " + who + " use it?" : "Our note (optional)"),
+        text, msg,
+        el("div", { class: "note-actions" },
+          el("button", { class: "btn", type: "submit" }, required ? "Save: we don't need it" : "Save note"),
+          el("button", { class: "btn ghost", type: "button", onclick: () => { editing = null; render(); } }, "Cancel")));
+    }
+    if (!current) return null;
+    const isSkip = current.pick === "skip";
+    return current.note
+      ? el("div", { class: "note" },
+          el("p", {}, el("strong", {}, isSkip ? "Why we don't need it: " : "Our note: "), current.note),
+          el("button", { type: "button", class: "link", onclick: () => openNote(card, current.pick, current.note) }, isSkip ? "Change the reason" : "Change the note"))
+      : el("button", { type: "button", class: "link", onclick: () => openNote(card, current.pick, "") }, "Add a note");
   }
 
   function wishCard(w) {
@@ -194,17 +244,18 @@
             el("strong", {}, "Keep up to " + KEEPS + " of all " + CARDS.size + " cards, across all steps. "),
             left ? left + (left === 1 ? " keep left." : " keeps left.") : "No keeps left: change one to Maybe to keep another."),
           el("li", {}, "Not sure? Choose Maybe. Can't agree? Leave the card without a choice."),
-          el("li", {}, "We don't need it? Say why: tell your host, or write it on a note or on the card."),
+          el("li", {}, "We don't need it? The board asks why: a few words are enough. Any card can have a note."),
           el("li", {}, "Missing something? Add a wish below. Card dots go on kept cards and wishes: the more dots, the more it matters to your person."))),
       el("div", { class: "grid" },
-        step.cards.map((c) => el("article", { class: "card " + (board.choices[c.id] || "") },
+        step.cards.map((c) => el("article", { class: "card " + (board.choices[c.id]?.pick || "") },
           picture(c),
           el("div", { class: "body" },
             el("span", { class: "id" }, c.id),
             el("h3", { class: "title" }, c.title),
             el("p", { class: "text" }, c.text),
             sourceTag(c),
-            choiceButtons(c)))),
+            choiceButtons(c),
+            noteBlock(c)))),
         board.wishes.filter((w) => w.step === step.id).map(wishCard)),
       wishForm(step),
       pager(order.indexOf(step), order, (s) => s.title));
