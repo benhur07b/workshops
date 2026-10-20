@@ -123,7 +123,7 @@
     const decided = (s) => s.cards.filter((c) => board.choices[c.id]).length;
     tabs.replaceChildren(
       ...NBS.steps.map((s) => el("li", {}, el("button", { type: "button", "aria-pressed": String(s.id === board.step), onclick: () => go(s.id) },
-        s.id + " " + s.title, el("span", { class: "count" }, " " + decided(s) + " of " + s.cards.length)))),
+        s.num + " " + s.title, el("span", { class: "count" }, " " + decided(s) + " of " + s.cards.length)))),
       el("li", {}, el("button", { type: "button", class: "data-tab", "aria-pressed": String(board.step === DATA_TAB), onclick: () => go(DATA_TAB) }, "Data we need")));
   }
 
@@ -237,7 +237,7 @@
     const order = [...NBS.steps, { id: DATA_TAB, title: "Data we need" }];
     view.replaceChildren(
       el("div", { class: "step-head" },
-        el("h2", {}, el("span", { class: "num" }, step.id), step.title),
+        el("h2", {}, el("span", { class: "num" }, step.num), step.title),
         el("p", { class: "question" }, step.question),
         el("ul", { class: "keeps" },
           el("li", { "aria-live": "polite" },
@@ -250,7 +250,7 @@
         step.cards.map((c) => el("article", { class: "card " + (board.choices[c.id]?.pick || "") },
           picture(c),
           el("div", { class: "body" },
-            el("span", { class: "id" }, c.id),
+            el("span", { class: "id" }, c.num),
             el("h3", { class: "title" }, c.title),
             el("p", { class: "text" }, c.text),
             sourceTag(c),
@@ -282,7 +282,7 @@
         el("span", { class: "id" }, isOwn ? "Our data" : d.id),
         el("h3", { class: "title" }, d.name),
         d.text ? el("p", { class: "text" }, d.text) : null,
-        usedBy.length ? el("p", { class: "more" }, "Used by cards: " + usedBy.map((c) => c.id + " " + c.title).join("; ")) : null,
+        usedBy.length ? el("p", { class: "more" }, "Used by cards: " + usedBy.map((c) => c.num + " " + c.title).join("; ")) : null,
         d.holder ? el("p", { class: "more" }, "We think it is with: " + d.holder) : null,
         isOwn ? null : el("div", { class: "choices" }, needBtn("need", "We need it"), needBtn("maybe", "Maybe"), needBtn("skip", "We don't need it")),
         a.need === "need" || a.need === "maybe" || isOwn ? el("div", { class: "data-fields" },

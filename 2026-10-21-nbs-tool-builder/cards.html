@@ -28,22 +28,23 @@
 <script src="cards.js"></script>
 <script src="common.js"></script>
 <script>
-  const { el, topbar, footer, picture, sourceTag } = UI;
+  const { el, topbar, footer, picture, sourceTag, allCards } = UI;
   topbar();
+  const cardById = new Map(allCards().map((c) => [c.id, c]));
   const links = document.getElementById("step-links");
   const guide = document.getElementById("guide");
   for (const step of NBS.steps) {
-    links.append(el("li", {}, el("a", { href: "#step-" + step.id }, step.id + " " + step.title)));
+    links.append(el("li", {}, el("a", { href: "#step-" + step.id }, step.num + " " + step.title)));
     guide.append(
       el("section", { id: "step-" + step.id, "aria-labelledby": "h-" + step.id },
         el("div", { class: "step-head" },
-          el("h2", { id: "h-" + step.id }, el("span", { class: "num" }, step.id), step.title),
+          el("h2", { id: "h-" + step.id }, el("span", { class: "num" }, step.num), step.title),
           el("p", { class: "question" }, step.question)),
         el("div", { class: "grid" },
           step.cards.map((c) => el("article", { class: "card" },
             picture(c),
             el("div", { class: "body" },
-              el("span", { class: "id" }, c.id),
+              el("span", { class: "id" }, c.num),
               el("h3", { class: "title" }, c.title),
               el("p", { class: "text" }, c.text),
               el("p", { class: "more" }, c.more),
@@ -69,7 +70,7 @@
           el("h3", { class: "title" }, d.name),
           el("p", { class: "text" }, d.text),
           el("p", { class: "more" }, "We think it is with: " + d.holder),
-          el("p", { class: "more" }, "Used by cards: " + d.cards.join(", "))))))));
+          el("p", { class: "more" }, "Used by cards: " + d.cards.map((id) => cardById.get(id)).map((c) => c.num + " " + c.title).join("; "))))))));
   footer();
 </script>
 </body>

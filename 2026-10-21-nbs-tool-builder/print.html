@@ -102,7 +102,7 @@
   const headers = el("div", { "data-part": "headers" },
     chunks(NBS.steps, 2).map((pair) => el("div", { class: "header-pair page-break" }, pair.map((s) =>
       el("div", { class: "header-sheet" },
-        el("div", { class: "big" }, el("em", {}, s.id), " ", s.title),
+        el("div", { class: "big" }, el("em", {}, s.num), " ", s.title),
         el("p", { class: "q" }, s.question),
         el("p", { class: "limit" }, "Keep up to " + UI.keepLimit() + " of all " + cards.length + " cards, across all steps"),
         el("p", { class: "note" }, "Not sure? Maybe. Can't agree? Leave the card. Don't need it? Write why on a note or on the card."),
@@ -123,8 +123,8 @@
   const cardSheets = el("div", { "data-part": "cards" },
     chunks([...cards, ...Array(fillers).fill(null)], PER_PAGE).map((group) => el("div", { class: "sheet page-break" },
       group.map((c) => c === null ? wishCard() : el("div", { class: "wcard" },
-        el("span", { class: "stepname" }, "Step " + c.step + " · " + stepTitle(c.step)),
-        el("span", { class: "cid" }, c.id),
+        el("span", { class: "stepname" }, "Step " + c.stepNum + " · " + stepTitle(c.step)),
+        el("span", { class: "cid" }, c.num),
         el("p", { class: "ctitle" }, c.title),
         el("p", { class: "ctext" }, c.text),
         el("span", { class: "csrc" }, NBS.sources[c.source]))))));

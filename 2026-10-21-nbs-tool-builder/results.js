@@ -5,6 +5,7 @@
 
 (function () {
   const { el, topbar, footer, allCards, download, personById, SHARE } = UI;
+  const STEP_NUM = new Map(NBS.steps.map((s) => [s.id, s.num]));
   const CARDS = allCards();
   const boards = []; // { name, board }
 
@@ -84,22 +85,22 @@
     if (!sel.length) { out.replaceChildren(); return; }
 
     const stepTitle = (id) => NBS.steps.find((s) => s.id === id).title;
-    const top = [...rows.filter((r) => r.dots), ...wishes.filter((w) => w.dots).map((w) => ({ id: "Wish", title: w.text, dots: w.dots, step: w.step }))]
+    const top = [...rows.filter((r) => r.dots), ...wishes.filter((w) => w.dots).map((w) => ({ num: "Wish", title: w.text, dots: w.dots, step: w.step }))]
       .sort((a, b) => b.dots - a.dots).slice(0, 10);
     const keepBar = (n) => el("div", { class: "bar", style: "width:" + (100 * n) / sel.length + "%", title: n + " of " + sel.length });
 
     out.replaceChildren(
       el("section", {},
         el("div", { class: "step-head" }, el("h2", {}, "Most dots")),
-        top.length ? table(["Card", "What", "Step", "Dots"], top.map((r) => el("tr", {}, td(r.id), td(r.title), td(stepTitle(r.step)), td(r.dots, true))))
+        top.length ? table(["Card", "What", "Step", "Dots"], top.map((r) => el("tr", {}, td(r.num), td(r.title), td(stepTitle(r.step)), td(r.dots, true))))
           : el("p", { class: "muted" }, "No dots given yet.")),
       ...NBS.steps.map((s) => {
         const r = rows.filter((x) => x.step === s.id).sort((a, b) => b.dots - a.dots || b.keep - a.keep || a.skip - b.skip);
         const w = wishes.filter((x) => x.step === s.id).sort((a, b) => b.dots - a.dots);
         return el("section", {},
-          el("div", { class: "step-head" }, el("h2", {}, el("span", { class: "num" }, s.id), s.title)),
-          table(["Card", "What", "Keep", "Maybe", "Don't need", "Dots", "Tables keeping it", "Why not, and notes"],
-            r.map((x) => el("tr", {}, td(x.id), td(x.title), td(x.keep, true), td(x.maybe, true), td(x.skip, true), td(x.dots, true), el("td", { style: "width:18%" }, keepBar(x.keep)),
+          el("div", { class: "step-head" }, el("h2", {}, el("span", { class: "num" }, s.num), s.title)),
+          table(["Card", "What", "From", "Keep", "Maybe", "Don't need", "Dots", "Tables keeping it", "Why not, and notes"],
+            r.map((x) => el("tr", {}, td(x.num), td(x.title), td(NBS.sources[x.source]), td(x.keep, true), td(x.maybe, true), td(x.skip, true), td(x.dots, true), el("td", { style: "width:18%" }, keepBar(x.keep)),
               el("td", { class: "notes" }, x.notes.map((n) => el("p", { class: "small" + (n.pick === "skip" ? " why-not" : "") }, el("strong", {}, n.table + ", " + PICKS[n.pick] + ": "), n.note)))))),
           w.length ? el("div", { style: "margin-top:12px" }, table(["Wish", "Information it needs", "Who has it", "Table", "Dots"],
             w.map((x) => el("tr", {}, td(x.text), td(x.info), td(x.who), td(x.table), td(x.dots, true))))) : null);
@@ -121,17 +122,17 @@
 
   csvBtn.addEventListener("click", () => {
     const { rows, wishes, data, dataOwn } = tally();
-    const lines = [["type", "step", "id", "what", "keep_or_need", "maybe", "dont_need", "dots", "information_or_why", "who_has_it_or_where", "can_share", "table", "choice"]];
+    const lines = [["type", "step", "number", "id", "what", "from", "keep_or_need", "maybe", "dont_need", "dots", "information_or_why", "who_has_it_or_where", "can_share", "table", "choice"]];
     for (const r of rows) {
-      lines.push(["card", r.step, r.id, r.title, r.keep, r.maybe, r.skip, r.dots, "", "", "", "", ""]);
-      for (const n of r.notes) lines.push(["card_note", r.step, r.id, r.title, "", "", "", "", n.note, "", "", n.table, PICKS[n.pick]]);
+      lines.push(["card", STEP_NUM.get(r.step), r.num, r.id, r.title, NBS.sources[r.source], r.keep, r.maybe, r.skip, r.dots, "", "", "", "", ""]);
+      for (const n of r.notes) lines.push(["card_note", STEP_NUM.get(r.step), r.num, r.id, r.title, "", "", "", "", "", n.note, "", "", n.table, PICKS[n.pick]]);
     }
-    for (const w of wishes) lines.push(["wish", w.step, "", w.text, "", "", "", w.dots, w.info, w.who, "", w.table]);
+    for (const w of wishes) lines.push(["wish", STEP_NUM.get(w.step), "", "", w.text, "", "", "", "", w.dots, w.info, w.who, "", w.table]);
     for (const d of data) {
-      lines.push(["data", "", d.id, d.name, d.need, d.maybe, d.skip, d.dots, "", "", "", ""]);
-      for (const n of d.notes) lines.push(["data_answer", "", d.id, d.name, "", "", "", "", n.why, n.where, n.share, n.table]);
+      lines.push(["data", "", "", d.id, d.name, "", d.need, d.maybe, d.skip, d.dots, "", "", "", ""]);
+      for (const n of d.notes) lines.push(["data_answer", "", "", d.id, d.name, "", "", "", "", "", n.why, n.where, n.share, n.table]);
     }
-    for (const d of dataOwn) lines.push(["data_added", "", "", d.name, "", "", "", d.dots, d.why, d.where, d.share, d.table]);
+    for (const d of dataOwn) lines.push(["data_added", "", "", "", d.name, "", "", "", "", d.dots, d.why, d.where, d.share, d.table]);
     download("nbs-tool-results-" + filter.value.toLowerCase() + ".csv", lines.map((l) => lines[0].map((_, i) => csvCell(l[i])).join(",")).join("\n"), "text/csv");
   });
   clearBtn.addEventListener("click", () => { boards.length = 0; render(); });
