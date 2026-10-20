@@ -80,7 +80,7 @@
   const personOwn = document.getElementById("person-own");
   const personCard = document.getElementById("person-card");
   for (const p of NBS.people) person.append(el("option", { value: p.id }, p.name + ", " + p.role));
-  person.append(el("option", { value: "own" }, "Someone else"));
+  person.append(el("option", { value: "own" }, "Someone else: our own person"));
 
   function showPerson() {
     const p = personById(board.person);
@@ -92,7 +92,7 @@
           el("p", {}, el("strong", {}, "Needs: "), p.needs),
           el("p", { class: "muted" }, p.tech),
           el("p", { class: "small" }, "Ask at every card: would " + p.name + " use this?"))
-      : el("div", { class: "persona" }, el("h3", {}, "We are building for someone else"), el("p", {}, "Describe them in a few words above, and ask at every card: would they use this?")));
+      : el("div", { class: "persona" }, el("h3", {}, "We are building for our own person"), el("p", {}, "Describe them in a few words above: who they are and what they need. Then ask at every card: would they use this?")));
   }
 
   function fillSetup() {
@@ -189,10 +189,13 @@
       el("div", { class: "step-head" },
         el("h2", {}, el("span", { class: "num" }, step.id), step.title),
         el("p", { class: "question" }, step.question),
-        el("p", { class: "keeps", "aria-live": "polite" },
-          el("strong", {}, "Keep up to " + KEEPS + " of all " + CARDS.size + " cards, across all steps. "),
-          left ? left + (left === 1 ? " keep left. " : " keeps left. ") : "No keeps left: change one to Maybe to keep another. ",
-          "Not sure? Choose Maybe.")),
+        el("ul", { class: "keeps" },
+          el("li", { "aria-live": "polite" },
+            el("strong", {}, "Keep up to " + KEEPS + " of all " + CARDS.size + " cards, across all steps. "),
+            left ? left + (left === 1 ? " keep left." : " keeps left.") : "No keeps left: change one to Maybe to keep another."),
+          el("li", {}, "Not sure? Choose Maybe. Can't agree? Leave the card without a choice."),
+          el("li", {}, "We don't need it? Say why: tell your host, or write it on a note or on the card."),
+          el("li", {}, "Missing something? Add a wish below. Card dots go on kept cards and wishes: the more dots, the more it matters to your person."))),
       el("div", { class: "grid" },
         step.cards.map((c) => el("article", { class: "card " + (board.choices[c.id] || "") },
           picture(c),

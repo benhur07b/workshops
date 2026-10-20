@@ -24,10 +24,11 @@
     return node;
   }
 
-  // Numbers in the page text come from the rules in cards.js, so the text can't drift from the board.
+  // Numbers in the page text come from the rules and cards in cards.js, so the text can't drift from the board.
   function fillRules() {
     const values = { keeps: keepLimit(), cards: allCards().length, cardDots: window.NBS.rules.cardDots, dataDots: window.NBS.rules.dataDots };
     for (const node of document.querySelectorAll("[data-rule]")) node.textContent = values[node.dataset.rule];
+    for (const node of document.querySelectorAll("[data-step-cards]")) node.textContent = window.NBS.steps.find((s) => s.id === node.dataset.stepCards).cards.length;
   }
 
   function topbar() {

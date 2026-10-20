@@ -88,6 +88,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 64px; }
 
 .lead { font-size: 1.15rem; max-width: 46em; }
+/* The board's rules, one per line, under its lead */
+.guide { max-width: 46em; margin: 0 0 8px; padding-left: 1.3em; display: grid; gap: 4px; }
+.guide .swatch { vertical-align: -3px; }
 .muted { color: var(--muted); }
 .small { font-size: 0.9rem; }
 
@@ -149,6 +152,7 @@ footer.site .credit { flex-basis: 100%; font-size: 0.85rem; color: color-mix(in 
 .card.maybe { border-color: var(--blue); border-style: dashed; }
 .card.data .data-fields { display: grid; gap: 8px; margin-top: 6px; }
 .keeps { margin: 6px 0 0; padding: 8px 12px; background: var(--white); border-left: 4px solid var(--green); border-radius: 6px; }
+ul.keeps { padding-left: 32px; display: grid; gap: 2px; }
 .data-tab { border-color: var(--orange) !important; }
 .data-tab[aria-pressed="true"] { background: var(--orange) !important; color: var(--navy) !important; }
 
@@ -244,5 +248,6 @@ dialog.zoom::backdrop { background: rgba(12, 35, 64, 0.7); }
 .howto-steps p { margin: 0 0 6px; }
 .howto-steps .legend { flex-direction: column; gap: 6px; margin: 6px 0 0; }
 .howto-list { padding-left: 1.4em; display: grid; gap: 6px; }
+.howto-steps .points { margin: 4px 0 8px; padding-left: 1.3em; display: grid; gap: 4px; }
 .howto .swatch { vertical-align: -3px; }
 .howto-steps .legend li { display: block; }

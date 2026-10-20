@@ -53,7 +53,7 @@ window.NBS = {
     { id: "D13", name: "Ancestral domains and land tenure", text: "Ancestral domain titles and forest tenure areas, so plans respect who holds the land.", holder: "NCIP; DENR-FMB", cards: ["2.2", "4.3"] },
     { id: "D14", name: "Elevation and slope", text: "How high and steep the land is, in detail.", holder: "NAMRIA", cards: ["2.3"] },
     { id: "D15", name: "Soil", text: "Soil types and their condition.", holder: "DA Bureau of Soils and Water Management", cards: ["2.14"] },
-    { id: "D16", name: "Existing NbS projects", text: "Where NbS projects are, what they do, and their results.", holder: "NbS Support Network members; CRS; DENR", cards: ["4.1", "4.4"] },
+    { id: "D16", name: "Existing NbS projects", text: "Where NbS projects are, what they do, and their results.", holder: "NbS Support Network members; CRS; DENR", cards: ["2.16", "4.1", "4.4"] },
   ],
 
   steps: [
@@ -93,6 +93,7 @@ window.NBS = {
         { id: "2.13", title: "Carbon stored", text: "How much carbon the area stores in trees, roots and soil.", more: "Important for carbon projects and climate reporting.", img: "carbon.webp", source: "SCENE" },
         { id: "2.14", title: "Soil types", text: "The main kinds of soil in the area.", more: "Soil affects what can be planted and restored.", img: "soil.webp", source: "SCENE" },
         { id: "2.15", title: "Rainfall and temperature", text: "Monthly rainfall and temperature through the year.", more: "SCENE shows long-term averages.", img: "climate-ledger.webp", source: "SCENE" },
+        { id: "2.16", title: "All NbS projects in the country", text: "Every NbS project in the Philippines on one national map.", more: "Not in SCENE. In the NbS demo, each dot is a project. Organisations would send their projects in a simple spreadsheet, and FFP joins them into this one map.", img: "nbs-projects.webp", source: "Demo" },
       ],
     },
     {
