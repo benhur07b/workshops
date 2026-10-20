@@ -9,6 +9,13 @@
     ["print.html", "Print cards"],
   ];
 
+  // Step and card numbers (step 2, card 2.6) come from their place in cards.js, so adding,
+  // removing or moving a card renumbers every page at once. Boards keep cards by id.
+  window.NBS.steps.forEach((s, i) => {
+    s.num = String(i + 1);
+    s.cards.forEach((c, j) => { c.num = s.num + "." + (j + 1); });
+  });
+
   function el(tag, attrs, ...children) {
     const node = document.createElement(tag);
     for (const [k, v] of Object.entries(attrs || {})) {
@@ -80,7 +87,7 @@
   }
 
   function allCards() {
-    return window.NBS.steps.flatMap((s) => s.cards.map((c) => Object.assign({ step: s.id }, c)));
+    return window.NBS.steps.flatMap((s) => s.cards.map((c) => Object.assign({ step: s.id, stepNum: s.num }, c)));
   }
 
   // Storage can be missing or blocked (private windows, strict settings); the pages work without it.
