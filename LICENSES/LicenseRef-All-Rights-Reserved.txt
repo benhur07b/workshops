@@ -1,0 +1,3 @@
+All rights reserved.
+
+The files marked with this identifier are not covered by this repository's licenses. Their copyright holder, named beside them in REUSE.toml, reserves all rights in them. BNHR's name and logos are here so the pages show as published, and third-party images and screenshots are here for teaching, commentary and criticism. Ask the copyright holder before reusing any of them.
