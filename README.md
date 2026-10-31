@@ -2,6 +2,10 @@
 
 Workshop materials and activity websites, published with GitHub Pages at https://bnhr.xyz/workshops/.
 
+## In the learning factory
+
+This repository is outside the learning factory's course and training chain: a workshop here is not a course of the hub's catalogue, and nothing here reads or is read by the factory's other repositories (the hub, [`learn-factory`](https://github.com/benhur07b/learn-factory) (private; its README's *The learning factory* has the model and every repository's role)).
+
 ## Layout
 
 One folder per workshop, named after its date and subject (`YYYY-MM-DD-name`), each self-contained with its own images and fonts, so a change to one workshop or to the brand never changes another. The address of a folder is `https://bnhr.xyz/workshops/<folder>/`.
